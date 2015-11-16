@@ -2,9 +2,9 @@
 Assignment for CSCE 740: Software Engineering.
 
 Work Split:
-Andrey: Session and Data Store\n
+Andrey: Session and Data Store
 
-Minxiang: Progress summery\n
+Minxiang: Progress summery
 
 Yue: Transcript
 
