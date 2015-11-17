@@ -37,5 +37,10 @@ public class Student {
 		this.setLastName(lastName);
 	}
 	
+	public Student(){
+		this.id = "";
+		this.firstName = "";
+		this.lastName = "";
+	}
 	
 }

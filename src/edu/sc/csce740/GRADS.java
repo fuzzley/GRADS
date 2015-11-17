@@ -5,7 +5,7 @@ import java.util.List;
 import edu.sc.csce740.exception.CoursesNotLoadedException;
 import edu.sc.csce740.exception.StudentRecordsNotLoadedException;
 import edu.sc.csce740.exception.UsersNotLoadedException;
-import edu.sc.csce740.model.CourseTaken;
+import edu.sc.csce740.model.Course;
 import edu.sc.csce740.model.ProgressSummary;
 import edu.sc.csce740.model.StudentRecord;
 import edu.sc.csce740.module.*;
@@ -80,7 +80,7 @@ public class GRADS implements GRADSIntf {
 
 	@Override
 	public ProgressSummary simulateCourses(String userId,
-			List<CourseTaken> courses) throws Exception {
+			List<Course> courses) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}

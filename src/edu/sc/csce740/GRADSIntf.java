@@ -36,7 +36,7 @@ package edu.sc.csce740;
 import java.util.List;
 import edu.sc.csce740.model.StudentRecord;
 import edu.sc.csce740.model.ProgressSummary;
-import edu.sc.csce740.model.CourseTaken;
+import edu.sc.csce740.model.Course;
 
 /**
  * This defines the interface between the driver of the 
@@ -159,6 +159,6 @@ public interface GRADSIntf
      * @throws Exception  if the progress summary could not be generated or the courses  
      * are invalid. SEE NOTE IN CLASS HEADER.
      */
-    public ProgressSummary simulateCourses(String userId, List<CourseTaken> courses) 
+    public ProgressSummary simulateCourses(String userId, List<Course> courses) 
             throws Exception;
 }

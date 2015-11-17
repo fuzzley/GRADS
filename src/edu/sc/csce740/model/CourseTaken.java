@@ -1,37 +1,37 @@
 package edu.sc.csce740.model;
 
 public class CourseTaken {
-	private String name;
-	private String id;
-	private String numCredits;
+	private Course course;
+	private Term term;
+	private String grade;
 	
-	public CourseTaken(String name, String id, String numCredits){
-		this.setName(name);
-		this.setId(id);
-		this.setNumCredits(numCredits);
+	public CourseTaken(Course course, Term term, String grade){
+		this.setCourse(course);
+		this.setTerm(term);
+		this.setGrade(grade);
 	}
 
-	public String getName() {
-		return name;
+	public Course getCourse() {
+		return course;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setCourse(Course course) {
+		this.course = course;
 	}
 
-	public String getId() {
-		return id;
+	public Term getTerm() {
+		return term;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setTerm(Term term) {
+		this.term = term;
 	}
 
-	public String getNumCredits() {
-		return numCredits;
+	public String getGrade() {
+		return grade;
 	}
 
-	public void setNumCredits(String numCredits) {
-		this.numCredits = numCredits;
+	public void setGrade(String grade) {
+		this.grade = grade;
 	}
 }

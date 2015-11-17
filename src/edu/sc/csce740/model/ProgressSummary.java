@@ -1,6 +1,7 @@
 package edu.sc.csce740.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ProgressSummary {
 	private Student student;
@@ -8,22 +9,33 @@ public class ProgressSummary {
 	private Term termBegan;
 	private Degree degreeSought;
 	private Degree certificateSought;
-	private ArrayList<Professor> advisor;
-	private ArrayList<Professor> committee;
-	private ArrayList<RequirementCheck> requirementCheckResults;
+	private List<Professor> advisors;
+	private List<Professor> committee;
+	private List<RequirementCheck> requirementCheckResults;
 	
 	public ProgressSummary(Student student, String department, 
 			Term termBegan, Degree degreeSought, Degree certificateSought,
-			ArrayList<Professor> advisor, ArrayList<Professor> committee,
-			ArrayList<RequirementCheck> requirementCheckResults){
+			List<Professor> advisors, List<Professor> committee,
+			List<RequirementCheck> requirementCheckResults){
 		this.setStudent(student);
 		this.setDepartment(department);
 		this.setTermBegan(termBegan);
 		this.setDegreeSought(degreeSought);
 		this.setCertificateSought(certificateSought);
-		this.setAdvisor(advisor);
+		this.setAdvisors(advisors);
 		this.setCommittee(committee);
 		this.setRequirementCheckResults(requirementCheckResults);
+	}
+	
+	public ProgressSummary(){
+		this.student = new Student();
+		this.department = "";
+		this.termBegan = new Term();
+		this.degreeSought = new Degree();
+		this.certificateSought = new Degree();
+		this.advisors = new ArrayList<Professor>();
+		this.committee = new ArrayList<Professor>();
+		this.requirementCheckResults = new ArrayList<RequirementCheck>();
 	}
 
 	public Student getStudent() {
@@ -66,27 +78,27 @@ public class ProgressSummary {
 		this.certificateSought = certificateSought;
 	}
 
-	public ArrayList<Professor> getAdvisor() {
-		return advisor;
+	public List<Professor> getAdvisors() {
+		return advisors;
 	}
 
-	public void setAdvisor(ArrayList<Professor> advisor) {
-		this.advisor = advisor;
+	public void setAdvisors(List<Professor> advisors) {
+		this.advisors = advisors;
 	}
 
-	public ArrayList<Professor> getCommittee() {
+	public List<Professor> getCommittee() {
 		return committee;
 	}
 
-	public void setCommittee(ArrayList<Professor> committee) {
+	public void setCommittee(List<Professor> committee) {
 		this.committee = committee;
 	}
 
-	public ArrayList<RequirementCheck> getRequirementCheckResults() {
+	public List<RequirementCheck> getRequirementCheckResults() {
 		return requirementCheckResults;
 	}
 
-	public void setRequirementCheckResults(ArrayList<RequirementCheck> requirementCheckResults) {
+	public void setRequirementCheckResults(List<RequirementCheck> requirementCheckResults) {
 		this.requirementCheckResults = requirementCheckResults;
 	}
 }

@@ -8,6 +8,11 @@ public class Degree {
 		this.setName(name);
 		this.setGraduation(graduation);
 	}
+	
+	public Degree(){
+		this.name = "";
+		this.graduation = new Term();
+	}
 
 	public String getName() {
 		return name;

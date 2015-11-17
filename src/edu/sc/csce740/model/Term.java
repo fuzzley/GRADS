@@ -8,6 +8,11 @@ public class Term {
 		this.setSemester(semester);
 		this.setYear(year);
 	}
+	
+	public Term(){
+		this.semester = "";
+		this.year = "";
+	}
 
 	public String getYear() {
 		return year;

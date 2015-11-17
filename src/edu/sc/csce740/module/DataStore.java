@@ -12,7 +12,7 @@ import edu.sc.csce740.model.*;
 
 public class DataStore {
 	public static StudentRecord[] studentRecords;
-	public static CourseTaken[] courses;
+	public static Course[] courses;
 	public static User[] users;
 	
 	/**
@@ -44,7 +44,7 @@ public class DataStore {
 		
 		Gson gson = new Gson();
 		try {
-			courses = gson.fromJson(coursesStr, CourseTaken[].class);
+			courses = gson.fromJson(coursesStr, Course[].class);
 		} catch (Exception ex) {
 			throw new CoursesNotLoadedException();
 		}
@@ -149,19 +149,13 @@ public class DataStore {
 			throw new StudentRecordNotFound();
 		} //else
 		
-		String[] notes = record.getNotes();
+		List<String> notes = record.getNotes();
 		if (notes == null) {
 			//create a new empty slot
-			notes = new String[1];
+			notes = new ArrayList<String>();
 		} else {
-			//expand the array by one
-			notes = new String[notes.length + 1];
-			//copy over the old notes
-			for (int i = 0; i < record.getNotes().length; i++) {
-				notes[i] = record.getNotes()[i];
-			}
+			notes.add(note);
 		}
-		notes[notes.length - 1] = note;
 		record.setNotes(notes);
 		
 		if (permanent) {

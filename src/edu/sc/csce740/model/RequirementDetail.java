@@ -1,22 +1,21 @@
 package edu.sc.csce740.model;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class RequirementDetail {
 	private String gpa;
 	private boolean passed;
-	private ArrayList<CourseRequirement> courses;
-	private ArrayList<Milestone> milestones;
-	private ArrayList<String> notes;
+	private List<CourseTaken> courses;
+	private List<Milestone> milestones;
+	private List<String> notes;
 	
-	public RequirementDetail(String gpa, boolean passed, ArrayList<CourseRequirement> courses,
-			ArrayList<Milestone> milestones, ArrayList<String> notes){
+	public RequirementDetail(String gpa, boolean passed, List<CourseTaken> courses,
+			List<Milestone> milestones, List<String> notes){
 		this.setGpa(gpa);
 		this.setPassed(passed);
 		this.setCourses(courses);
 		this.setMilestones(milestones);
 		this.setNotes(notes);
-		
 	}
 
 	public String getGpa() {
@@ -35,27 +34,27 @@ public class RequirementDetail {
 		this.passed = passed;
 	}
 
-	public ArrayList<CourseRequirement> getCourses() {
+	public List<CourseTaken> getCourses() {
 		return courses;
 	}
 
-	public void setCourses(ArrayList<CourseRequirement> courses) {
+	public void setCourses(List<CourseTaken> courses) {
 		this.courses = courses;
 	}
 
-	public ArrayList<Milestone> getMilestones() {
+	public List<Milestone> getMilestones() {
 		return milestones;
 	}
 
-	public void setMilestones(ArrayList<Milestone> milestones) {
+	public void setMilestones(List<Milestone> milestones) {
 		this.milestones = milestones;
 	}
 
-	public ArrayList<String> getNotes() {
+	public List<String> getNotes() {
 		return notes;
 	}
 
-	public void setNotes(ArrayList<String> notes) {
+	public void setNotes(List<String> notes) {
 		this.notes = notes;
 	}
 
