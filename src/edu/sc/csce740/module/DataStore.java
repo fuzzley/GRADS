@@ -142,12 +142,12 @@ public class DataStore {
 	 * @param userId The id of the student for whom the note is intended.
 	 * @param note The note to be added to the student's record.
 	 * @param permanent Indicates whether the change is permanent or temporary.
-	 * @throws StudentRecordNotFound
+	 * @throws StudentRecordNotFoundException
 	 */
-	public static void addNote(String userId, String note, boolean permanent) throws StudentRecordNotFound {
+	public static void addNote(String userId, String note, boolean permanent) throws StudentRecordNotFoundException {
 		StudentRecord record = getTranscript(userId);
 		if (record == null) {
-			throw new StudentRecordNotFound();
+			throw new StudentRecordNotFoundException();
 		} //else
 		
 		List<String> notes = record.getNotes();
@@ -212,17 +212,17 @@ public class DataStore {
 	 * @param userId The id of the student to whom the student record belongs.
 	 * @param transcript The new StudentRecord that will replace the old one.
 	 * @param permanent Indicates whether the change is permanent or temporary.
-	 * @throws StudentRecordNotFound
+	 * @throws StudentRecordNotFoundException
 	 */
-	public static void updateTranscript(String userId, StudentRecord transcript, boolean permanent) throws StudentRecordNotFound {
+	public static void updateTranscript(String userId, StudentRecord transcript, boolean permanent) throws StudentRecordNotFoundException {
 		StudentRecord record = getTranscript(userId);
 		if (record == null) {
-			throw new StudentRecordNotFound();
+			throw new StudentRecordNotFoundException();
 		} //else
 		
 		int indexOfRecord = studentRecords.indexOf(record);
 		if (indexOfRecord < 0) {
-			throw new StudentRecordNotFound();
+			throw new StudentRecordNotFoundException();
 		} //else
 		
 		//overwrite existing transcript

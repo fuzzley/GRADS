@@ -48,7 +48,7 @@ public class GRADS implements GRADSIntf {
 	}
 
 	@Override
-	public List<String> getStudentIDs() throws NoUserSetInSessionException, LoggedInUserDoesNotHavePermission {
+	public List<String> getStudentIDs() throws NoUserSetInSessionException, LoggedInUserDoesNotHavePermissionException {
 		String loggedInUserId = Session.getUser();
 		if (loggedInUserId == null) {
 			throw new NoUserSetInSessionException();
@@ -56,14 +56,14 @@ public class GRADS implements GRADSIntf {
 		
 		User loggedInUser = DataStore.getPermissionByUserId(loggedInUserId);
 		if (loggedInUser.getRole() != User.GPC_ROLE) {
-			throw new LoggedInUserDoesNotHavePermission();
+			throw new LoggedInUserDoesNotHavePermissionException();
 		} //else
 		
 		return DataStore.getStudentIDs();
 	}
 
 	@Override
-	public StudentRecord getTranscript(String userId) throws NoUserSetInSessionException, LoggedInUserDoesNotHavePermission, StudentRecordsNotLoadedException {
+	public StudentRecord getTranscript(String userId) throws NoUserSetInSessionException, LoggedInUserDoesNotHavePermissionException, StudentRecordNotFoundException {
 		String loggedInUserId = Session.getUser();
 		if (loggedInUserId == null) {
 			throw new NoUserSetInSessionException();
@@ -71,20 +71,15 @@ public class GRADS implements GRADSIntf {
 		
 		User loggedInUser = DataStore.getPermissionByUserId(loggedInUserId);
 		if (loggedInUser.getRole() != User.GPC_ROLE && !loggedInUserId.equals(userId)) {
-			throw new LoggedInUserDoesNotHavePermission();
+			throw new LoggedInUserDoesNotHavePermissionException();
 		} //else
 		
-		StudentRecord transcript = DataStore.getTranscript(userId);
-		if (transcript == null) {
-			throw new StudentRecordsNotLoadedException();
-		} //else
-		
-		return transcript;
+		 return TranscriptManager.getTranscript(userId);
 	}
 
 	@Override
 	public void updateTranscript(String userId, StudentRecord transcript,
-			Boolean permanent) throws NoUserSetInSessionException, LoggedInUserDoesNotHavePermission, StudentRecordNotFound {
+			Boolean permanent) throws NoUserSetInSessionException, LoggedInUserDoesNotHavePermissionException, StudentRecordNotFoundException {
 		String loggedInUserId = Session.getUser();
 		if (loggedInUserId == null) {
 			throw new NoUserSetInSessionException();
@@ -92,19 +87,19 @@ public class GRADS implements GRADSIntf {
 		
 		User loggedInUser = DataStore.getPermissionByUserId(loggedInUserId);
 		if (loggedInUser.getRole() != User.GPC_ROLE && !loggedInUserId.equals(userId)) {
-			throw new LoggedInUserDoesNotHavePermission();
+			throw new LoggedInUserDoesNotHavePermissionException();
 		} //else
 		
 		if (loggedInUserId.equals(userId) && permanent) {
-			throw new LoggedInUserDoesNotHavePermission();
+			throw new LoggedInUserDoesNotHavePermissionException();
 		} //else
 		
-		DataStore.updateTranscript(userId,  transcript, permanent);
+		TranscriptManager.updateTranscript(userId,  transcript, permanent);
 	}
 
 	@Override
 	public void addNote(String userId, String note, Boolean permanent)
-			 throws NoUserSetInSessionException, LoggedInUserDoesNotHavePermission, StudentRecordNotFound {
+			 throws NoUserSetInSessionException, LoggedInUserDoesNotHavePermissionException, StudentRecordNotFoundException {
 		String loggedInUserId = Session.getUser();
 		if (loggedInUserId == null) {
 			throw new NoUserSetInSessionException();
@@ -112,10 +107,10 @@ public class GRADS implements GRADSIntf {
 		
 		User loggedInUser = DataStore.getPermissionByUserId(loggedInUserId);
 		if (loggedInUser.getRole() != User.GPC_ROLE) {
-			throw new LoggedInUserDoesNotHavePermission();
+			throw new LoggedInUserDoesNotHavePermissionException();
 		} //else
 		
-		DataStore.addNote(userId, note, permanent);
+		TranscriptManager.addNote(userId, note, permanent);
 	}
 
 	@Override
