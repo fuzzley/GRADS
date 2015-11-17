@@ -2,6 +2,9 @@ package edu.sc.csce740;
 
 import java.util.List;
 
+import edu.sc.csce740.exception.CoursesNotLoadedException;
+import edu.sc.csce740.exception.StudentRecordsNotLoadedException;
+import edu.sc.csce740.exception.UsersNotLoadedException;
 import edu.sc.csce740.model.CourseTaken;
 import edu.sc.csce740.model.ProgressSummary;
 import edu.sc.csce740.model.StudentRecord;
@@ -10,18 +13,18 @@ import edu.sc.csce740.module.*;
 public class GRADS implements GRADSIntf {
 
 	@Override
-	public void loadUsers(String usersFile) throws Exception {
+	public void loadUsers(String usersFile) throws UsersNotLoadedException {
 		DataStore.loadUsers(usersFile);		
 	}
 
 	@Override
-	public void loadCourses(String coursesFile) throws Exception {
+	public void loadCourses(String coursesFile) throws CoursesNotLoadedException {
 		DataStore.loadCourses(coursesFile);		
 	}
 
 	@Override
-	public void loadRecords(String recordsFile) throws Exception {
-		DataStore.loadStudentRecords(recordsFile);
+	public void loadRecords(String recordsFile) throws StudentRecordsNotLoadedException {
+		DataStore.loadRecords(recordsFile);
 	}
 
 	@Override
