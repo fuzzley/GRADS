@@ -3,6 +3,7 @@ package edu.sc.csce740.module;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.google.gson.Gson;
@@ -11,9 +12,9 @@ import edu.sc.csce740.exception.*;
 import edu.sc.csce740.model.*;
 
 public class DataStore {
-	public static StudentRecord[] studentRecords;
-	public static Course[] courses;
-	public static User[] users;
+	public static List<StudentRecord> studentRecords;
+	public static List<Course> courses;
+	public static List<User> users;
 	
 	/**
 	 * Load a list of courses from the file at the location provided by "fileName"
@@ -44,7 +45,7 @@ public class DataStore {
 		
 		Gson gson = new Gson();
 		try {
-			courses = gson.fromJson(coursesStr, Course[].class);
+			courses = Arrays.asList(gson.fromJson(coursesStr, Course[].class));
 		} catch (Exception ex) {
 			throw new CoursesNotLoadedException();
 		}
@@ -79,7 +80,7 @@ public class DataStore {
 		
 		Gson gson = new Gson();
 		try {
-			studentRecords = gson.fromJson(recordsStr, StudentRecord[].class);
+			studentRecords = Arrays.asList(gson.fromJson(recordsStr, StudentRecord[].class));
 		} catch (Exception ex) {
 			throw new StudentRecordsNotLoadedException();
 		}
@@ -114,7 +115,7 @@ public class DataStore {
 		
 		Gson gson = new Gson();
 		try {
-			users = gson.fromJson(usersStr, User[].class);
+			users = Arrays.asList(gson.fromJson(usersStr, User[].class));
 		} catch (Exception ex) {
 			throw new UsersNotLoadedException();
 		}
@@ -219,13 +220,13 @@ public class DataStore {
 			throw new StudentRecordNotFound();
 		} //else
 		
-		int indexOfRecord = java.util.Arrays.asList(studentRecords).indexOf(record);
+		int indexOfRecord = studentRecords.indexOf(record);
 		if (indexOfRecord < 0) {
 			throw new StudentRecordNotFound();
 		} //else
 		
 		//overwrite existing transcript
-		studentRecords[indexOfRecord] = transcript;
+		studentRecords.set(indexOfRecord, transcript);;
 		
 		if (permanent) {
 			//TODO: save student records

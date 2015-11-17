@@ -28,6 +28,10 @@ public class StudentRecord {
 		this.setMilestonesSet(milestonesSet);
 		this.setNotes(notes);
 	}
+	
+	public StudentRecord() {
+		
+	}
 
 	public Student getStudent() {
 		return student;

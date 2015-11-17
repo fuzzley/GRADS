@@ -15,7 +15,8 @@
       "graduation": {
         "semester": "SPRING",
         "year": 2018
-      },
+      }
+    },
     "previousDegrees": [
        {
         "name": "BS",
@@ -191,7 +192,6 @@
       "Great student. A++ Would recommend.",
       "Owes me 20 bucks."
     ]
-  }
   },
   {
     "student": {

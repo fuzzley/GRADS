@@ -1,5 +1,6 @@
 package edu.sc.csce740.module;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.sc.csce740.model.*;
@@ -37,7 +38,7 @@ public class ProgressSummaryGenerator {
 		
 		ProgressSummary ps = new ProgressSummary(record.getStudent(),
 				record.getDepartment(), record.getTermBegan(),record.getDegreeSought(), 
-				record.getCertificateSought(), record.getAdvisors(), record.getCommittee(),);
+				record.getCertificateSought(), record.getAdvisors(), record.getCommittee(), new ArrayList<RequirementCheck>());
 		return ps;
 	}
 	

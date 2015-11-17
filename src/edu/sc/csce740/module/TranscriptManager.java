@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.List;
 
 import com.google.gson.Gson;
 
@@ -34,8 +35,8 @@ public class TranscriptManager {
 	}
 
 	public static void updateTranscript(Student student, String department, Term termBegan, Degree degreeSought, Degree certificateSought,
-					Degree[] previousDegrees, Professor[] advisors, Professor[] committee, CourseTaken[] coursesTaken, Milestone[] milestoneSet,
-					String[] notes, String fileName) throws StudentRecordNotFound 
+					List<Degree> previousDegrees, List<Professor> advisors, List<Professor> committee, List<CourseTaken> coursesTaken, List<Milestone> milestoneSet,
+					List<String> notes, String fileName) throws StudentRecordNotFound 
 	{
 		StudentRecord record = new StudentRecord();
 		record.setAdvisors(advisors);
@@ -44,7 +45,7 @@ public class TranscriptManager {
 		record.setCommittee(committee);
 		record.setCoursesTaken(coursesTaken);
 		record.setDepartment(department);
-		record.setMilestoneSet(milestoneSet);
+		record.setMilestonesSet(milestoneSet);
 		record.setNotes(notes);
 		record.setPreviousDegrees(previousDegrees);
 		record.setTermBegan(termBegan);
