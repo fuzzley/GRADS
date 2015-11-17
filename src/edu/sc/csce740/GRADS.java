@@ -5,26 +5,23 @@ import java.util.List;
 import edu.sc.csce740.model.CourseTaken;
 import edu.sc.csce740.model.ProgressSummary;
 import edu.sc.csce740.model.StudentRecord;
-import edu.sc.csce740.modules.*;
+import edu.sc.csce740.module.*;
 
 public class GRADS implements GRADSIntf {
 
 	@Override
 	public void loadUsers(String usersFile) throws Exception {
-		// TODO Auto-generated method stub
-		
+		DataStore.loadUsers(usersFile);		
 	}
 
 	@Override
 	public void loadCourses(String coursesFile) throws Exception {
-		// TODO Auto-generated method stub
-		
+		DataStore.loadCourses(coursesFile);		
 	}
 
 	@Override
 	public void loadRecords(String recordsFile) throws Exception {
-		// TODO Auto-generated method stub
-		
+		DataStore.loadStudentRecords(recordsFile);
 	}
 
 	@Override
