@@ -33,18 +33,10 @@ public class TranscriptManager {
 		return studentsRecords;
 	}
 
-	public static void updateTranscript(Student student,
-										String department,
-										Term termBegan,
-										Degree degreeSought,
-										Degree certificateSought,
-										Degree[] previousDegrees,
-										Professor[] advisors,
-										Professor[] committee,
-										CourseTaken[] coursesTaken,
-										Milestone[] milestoneSet,
-										String[] notes, String fileName) throws StudentRecordNotFound {
-		
+	public static void updateTranscript(Student student, String department, Term termBegan, Degree degreeSought, Degree certificateSought,
+					Degree[] previousDegrees, Professor[] advisors, Professor[] committee, CourseTaken[] coursesTaken, Milestone[] milestoneSet,
+					String[] notes, String fileName) throws StudentRecordNotFound 
+	{
 		StudentRecord record = new StudentRecord();
 		record.setAdvisors(advisors);
 		record.setStudent(student);
