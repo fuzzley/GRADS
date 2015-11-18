@@ -10,6 +10,12 @@ public class RequirementCheck {
 		this.setPassed(passed);
 		this.setDetails(details);
 	}
+	
+	public RequirementCheck(String name){
+		this.name = name;
+		this.passed = false;
+		this.details = new RequirementDetail();
+	}
 
 	public String getName() {
 		return name;

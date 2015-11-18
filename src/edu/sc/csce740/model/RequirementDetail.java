@@ -17,6 +17,10 @@ public class RequirementDetail {
 		this.setMilestones(milestones);
 		this.setNotes(notes);
 	}
+	
+	public RequirementDetail(){
+		this.passed = false;
+	}
 
 	public String getGpa() {
 		return gpa;
