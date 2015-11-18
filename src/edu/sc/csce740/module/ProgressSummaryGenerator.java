@@ -68,6 +68,9 @@ public class ProgressSummaryGenerator {
 			else if (courses.get(i).getGrade().equalsIgnoreCase("D")){
 				grade = 1;
 			}
+			else if (courses.get(i).getGrade().equalsIgnoreCase("F")){
+				grade = 0;
+			}
 			gradesTimesCredits += grade*credit;
 			credits += credit;
 		}
