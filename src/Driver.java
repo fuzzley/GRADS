@@ -1,5 +1,9 @@
 import edu.sc.csce740.GRADS;
+import edu.sc.csce740.module.*;
+import edu.sc.csce740.model.*;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class Driver {
 	
@@ -16,6 +20,10 @@ public class Driver {
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
 		}
+		
+		ProgressSummary ps = ProgressSummaryGenerator.generateProgressSummary("mhunt");
+		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+		System.out.println(gson.toJson(ps));
 		
 		System.out.println("done");
 	}

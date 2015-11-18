@@ -1,5 +1,6 @@
 package edu.sc.csce740.module;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
@@ -36,7 +37,26 @@ import edu.sc.csce740.module.DataStore;
 public class ProgressSummaryGenerator {
 	public static ProgressSummary generateProgressSummary(String studentId){
 		StudentRecord record = DataStore.getTranscript(studentId);
-		List<RequirementCheck> requirementCheckResults = checkPhD(record);
+		List<RequirementCheck> requirementCheckResults = new ArrayList<RequirementCheck>();
+		if(record.getDegreeSought().getName().equalsIgnoreCase("PHD")){
+			requirementCheckResults = checkPhD(record);
+		}
+		else if(record.getDegreeSought().getName().equalsIgnoreCase("MS")){
+			requirementCheckResults = checkMS(record);
+		}
+		else if(record.getDegreeSought().getName().equalsIgnoreCase("MENG")){
+			requirementCheckResults = checkMENG(record);
+		}
+		else if(record.getDegreeSought().getName().equalsIgnoreCase("MSE")){
+			requirementCheckResults = checkMSE(record);
+		}
+		
+		if (record.getDegreeSought().getName().equalsIgnoreCase("MSE")){
+			List<RequirementCheck> requirementINFAS = checkINFAS(record);
+			for(int i=0; i<requirementINFAS.size();i++){
+				requirementCheckResults.add(requirementINFAS.get(i));
+			}
+		}
 		
 		ProgressSummary ps = new ProgressSummary(record.getStudent(),
 				record.getDepartment(), record.getTermBegan(),record.getDegreeSought(), 
@@ -46,7 +66,35 @@ public class ProgressSummaryGenerator {
 	}
 	
 	public static ProgressSummary simulateCourses(String studentId, List<CourseTaken> courses){
-		ProgressSummary ps = new ProgressSummary();
+		StudentRecord record = DataStore.getTranscript(studentId);
+		//adding simulated courses to record
+		record.getCoursesTaken().addAll(courses);
+		
+		List<RequirementCheck> requirementCheckResults = new ArrayList<RequirementCheck>();
+		if(record.getDegreeSought().getName().equalsIgnoreCase("PHD")){
+			requirementCheckResults = checkPhD(record);
+		}
+		else if(record.getDegreeSought().getName().equalsIgnoreCase("MS")){
+			requirementCheckResults = checkMS(record);
+		}
+		else if(record.getDegreeSought().getName().equalsIgnoreCase("MENG")){
+			requirementCheckResults = checkMENG(record);
+		}
+		else if(record.getDegreeSought().getName().equalsIgnoreCase("MSE")){
+			requirementCheckResults = checkMSE(record);
+		}
+		
+		if (record.getDegreeSought().getName().equalsIgnoreCase("MSE")){
+			List<RequirementCheck> requirementINFAS = checkINFAS(record);
+			for(int i=0; i<requirementINFAS.size();i++){
+				requirementCheckResults.add(requirementINFAS.get(i));
+			}
+		}
+		
+		ProgressSummary ps = new ProgressSummary(record.getStudent(),
+				record.getDepartment(), record.getTermBegan(),record.getDegreeSought(), 
+				record.getCertificateSought(), record.getAdvisors(), record.getCommittee(), requirementCheckResults);
+
 		return ps;
 	}
 	
@@ -74,8 +122,10 @@ public class ProgressSummaryGenerator {
 			gradesTimesCredits += grade*credit;
 			credits += credit;
 		}
+		
 		gpa = gradesTimesCredits / credits;
-		return gpa;
+		BigDecimal b = new BigDecimal(gpa);  
+		return b.setScale(2,BigDecimal.ROUND_HALF_UP).floatValue();
 	}
 	/*
 	 * hard code graduation rules
@@ -131,13 +181,14 @@ public class ProgressSummaryGenerator {
 					otherCoursesTaken.add(record.getCoursesTaken().get(i));
 					if(record.getCoursesTaken().get(i).getCourse().getId().equalsIgnoreCase("csce899")){
 						course899.add(record.getCoursesTaken().get(i));
-						credits899 = Integer.parseInt(record.getCoursesTaken().get(i).getCourse().getNumCredits());
+						credits899 += Integer.parseInt(record.getCoursesTaken().get(i).getCourse().getNumCredits());
 					}
 				}
 			}
 		}
 		if (coreCoursesTaken.size() == 5){
 			coreCourses.setPassed(true);
+			coreCourses.getDetails().setPassed(true);
 		}
 		coreCourses.getDetails().setCourses(coreCoursesTaken);
 		requirementCheckResults.add(coreCourses);
@@ -157,6 +208,7 @@ public class ProgressSummaryGenerator {
 		}
 		if(credits >= 20){
 			additionalCredits.setPassed(true);
+			additionalCredits.getDetails().setPassed(true);
 		}
 		additionalCredits.getDetails().setCourses(validAdditionalCoursesTaken);
 		requirementCheckResults.add(additionalCredits);
@@ -181,10 +233,12 @@ public class ProgressSummaryGenerator {
 			if(master.contains(record.getPreviousDegrees().get(i).getName())){
 				if (credits700 >= 24){
 					degreeBasedCredits.setPassed(true);
+					degreeBasedCredits.getDetails().setPassed(true);
 				}
 			}
 			else if(credits700 > 24 && credits500 >= 48){
 				degreeBasedCredits.setPassed(true);
+				degreeBasedCredits.getDetails().setPassed(true);
 			}
 		}
 		degreeBasedCredits.getDetails().setCourses(validDegreeCoursesTaken);
@@ -194,14 +248,16 @@ public class ProgressSummaryGenerator {
 		RequirementCheck thesisCredits = new RequirementCheck("THESIS_CREDITS_PHD");
 		if(credits899 >= 12){
 			thesisCredits.setPassed(true);
+			thesisCredits.getDetails().setPassed(true);
 		}
 		thesisCredits.getDetails().setCourses(course899);
 		requirementCheckResults.add(thesisCredits);
 		
 		//time limit
 		RequirementCheck timeRequirement = new RequirementCheck("TIME_LIMIT_PHD");
-		if(Integer.parseInt(record.getTermBegan().getYear()) <= 8){
+		if(year - Integer.parseInt(record.getTermBegan().getYear()) <= 8){
 			timeRequirement.setPassed(true);
+			timeRequirement.getDetails().setPassed(true);
 		}
 		List<String> timeNotes = new ArrayList<String>();
 		timeNotes.add("A student must complete all degree requirements within a period of eight years after being admitted to the program as a regular student.");
@@ -210,8 +266,11 @@ public class ProgressSummaryGenerator {
 		
 		//gpa requirement
 		RequirementCheck gpaRequirement = new RequirementCheck("GPA");
-		if(getGpa(record.getCoursesTaken()) > 3){
+		float current_gpa = getGpa(record.getCoursesTaken());
+		gpaRequirement.getDetails().setGpa(Float.toString(current_gpa));
+		if(current_gpa > 3){
 			gpaRequirement.setPassed(true);
+			gpaRequirement.getDetails().setPassed(true);
 		}
 		List<String> gpaNotes = new ArrayList<String>();
 		gpaNotes.add("For graduation a student must have a 3.0 GPA on all graduate courses taken and all courses taken at the 700 level or above.");
@@ -225,6 +284,7 @@ public class ProgressSummaryGenerator {
 		}
 		if(milestones.isEmpty()){
 			milestoneRequirement.setPassed(true);
+			milestoneRequirement.getDetails().setPassed(true);
 		}
 		milestoneRequirement.getDetails().setMilestones(record.getMilestonesSet());
 		requirementCheckResults.add(milestoneRequirement);
@@ -279,13 +339,14 @@ public class ProgressSummaryGenerator {
 					otherCoursesTaken.add(record.getCoursesTaken().get(i));
 					if(record.getCoursesTaken().get(i).getCourse().getId().equalsIgnoreCase("csce799")){
 						course799.add(record.getCoursesTaken().get(i));
-						credits799 = Integer.parseInt(record.getCoursesTaken().get(i).getCourse().getNumCredits());
+						credits799 += Integer.parseInt(record.getCoursesTaken().get(i).getCourse().getNumCredits());
 					}
 				}
 			}
 		}
 		if (coreCoursesTaken.size() == 4){
 			coreCourses.setPassed(true);
+			coreCourses.getDetails().setPassed(true);
 		}
 		coreCourses.getDetails().setCourses(coreCoursesTaken);
 		requirementCheckResults.add(coreCourses);
@@ -305,6 +366,7 @@ public class ProgressSummaryGenerator {
 		}
 		if(credits >= 8){
 			additionalCredits.setPassed(true);
+			additionalCredits.getDetails().setPassed(true);
 		}
 		additionalCredits.getDetails().setCourses(validAdditionalCoursesTaken);
 		requirementCheckResults.add(additionalCredits);
@@ -321,17 +383,13 @@ public class ProgressSummaryGenerator {
 				if(!record.getCoursesTaken().get(i).getCourse().getId().replaceAll("[0-9]", "").equalsIgnoreCase("csce")){
 					non_csce_credits += Integer.parseInt(record.getCoursesTaken().get(i).getCourse().getNumCredits());
 					if (non_csce_credits > 6){
-						credits += 6;
-					}else{
-						credits += non_csce_credits;
+						non_csce_credits = 6;
 					}
 				}
 				else if(record.getCoursesTaken().get(i).getCourse().getId().equalsIgnoreCase("csce798")){
 					csce798_credits += Integer.parseInt(record.getCoursesTaken().get(i).getCourse().getNumCredits());
 					if(csce798_credits > 3){
-						credits += 3;
-					}else{
-						credits += csce798_credits;
+						csce798_credits = 3;
 					}
 					
 				}else{
@@ -340,8 +398,9 @@ public class ProgressSummaryGenerator {
 			}
 		}
 		
-		if (credits >= 24){
+		if (credits+non_csce_credits+csce798_credits >= 24){
 			degreeBasedCredits.setPassed(true);
+			degreeBasedCredits.getDetails().setPassed(true);
 		}
 		
 		degreeBasedCredits.getDetails().setCourses(validDegreeCoursesTaken);
@@ -351,14 +410,16 @@ public class ProgressSummaryGenerator {
 		RequirementCheck thesisCredits = new RequirementCheck("THESIS_CREDITS_MS");
 		if(credits799 >= 6){
 			thesisCredits.setPassed(true);
+			thesisCredits.getDetails().setPassed(true);
 		}
 		thesisCredits.getDetails().setCourses(course799);
 		requirementCheckResults.add(thesisCredits);
 		
 		//time limit
 		RequirementCheck timeRequirement = new RequirementCheck("TIME_LIMIT_MS");
-		if(Integer.parseInt(record.getTermBegan().getYear()) <= 6){
+		if(year - Integer.parseInt(record.getTermBegan().getYear()) <= 6){
 			timeRequirement.setPassed(true);
+			timeRequirement.getDetails().setPassed(true);
 		}
 		List<String> timeNotes = new ArrayList<String>();
 		timeNotes.add("A student must complete all degree requirements within a period of six years after being admitted to the program as a regular student.");
@@ -367,8 +428,11 @@ public class ProgressSummaryGenerator {
 		
 		//gpa requirement
 		RequirementCheck gpaRequirement = new RequirementCheck("GPA");
-		if(getGpa(record.getCoursesTaken()) > 3){
+		float current_gpa = getGpa(record.getCoursesTaken());
+		gpaRequirement.getDetails().setGpa(Float.toString(current_gpa));
+		if(current_gpa > 3){
 			gpaRequirement.setPassed(true);
+			gpaRequirement.getDetails().setPassed(true);
 		}
 		List<String> gpaNotes = new ArrayList<String>();
 		gpaNotes.add("For graduation a student must have a 3.0 GPA on all graduate courses taken and all courses taken at the 700 level or above.");
@@ -382,6 +446,7 @@ public class ProgressSummaryGenerator {
 		}
 		if(milestones.isEmpty()){
 			milestoneRequirement.setPassed(true);
+			milestoneRequirement.getDetails().setPassed(true);
 		}
 		milestoneRequirement.getDetails().setMilestones(record.getMilestonesSet());
 		requirementCheckResults.add(milestoneRequirement);
@@ -432,6 +497,7 @@ public class ProgressSummaryGenerator {
 		}
 		if (coreCoursesTaken.size() == 4){
 			coreCourses.setPassed(true);
+			coreCourses.getDetails().setPassed(true);
 		}
 		coreCourses.getDetails().setCourses(coreCoursesTaken);
 		requirementCheckResults.add(coreCourses);
@@ -451,6 +517,7 @@ public class ProgressSummaryGenerator {
 		}
 		if(credits >= 11){
 			additionalCredits.setPassed(true);
+			additionalCredits.getDetails().setPassed(true);
 		}
 		additionalCredits.getDetails().setCourses(validAdditionalCoursesTaken);
 		requirementCheckResults.add(additionalCredits);
@@ -467,17 +534,13 @@ public class ProgressSummaryGenerator {
 				if(!record.getCoursesTaken().get(i).getCourse().getId().replaceAll("[0-9]", "").equalsIgnoreCase("csce")){
 					non_csce_credits += Integer.parseInt(record.getCoursesTaken().get(i).getCourse().getNumCredits());
 					if (non_csce_credits > 6){
-						credits += 6;
-					}else{
-						credits += non_csce_credits;
+						non_csce_credits = 6;
 					}
 				}
 				else if(record.getCoursesTaken().get(i).getCourse().getId().equalsIgnoreCase("csce798")){
-					csce798_credits += Integer.parseInt(record.getCoursesTaken().get(i).getCourse().getNumCredits());
+					csce798_credits = Integer.parseInt(record.getCoursesTaken().get(i).getCourse().getNumCredits());
 					if(csce798_credits > 3){
-						credits += 3;
-					}else{
-						credits += csce798_credits;
+						csce798_credits = 3;
 					}
 					
 				}else{
@@ -486,8 +549,9 @@ public class ProgressSummaryGenerator {
 			}
 		}
 		
-		if (credits >= 30){
+		if (credits+non_csce_credits+csce798_credits >= 30){
 			degreeBasedCredits.setPassed(true);
+			degreeBasedCredits.getDetails().setPassed(true);
 		}
 		
 		degreeBasedCredits.getDetails().setCourses(validDegreeCoursesTaken);
@@ -495,8 +559,9 @@ public class ProgressSummaryGenerator {
 		
 		//time limit
 		RequirementCheck timeRequirement = new RequirementCheck("TIME_LIMIT_MENG");
-		if(Integer.parseInt(record.getTermBegan().getYear()) <= 6){
+		if(year - Integer.parseInt(record.getTermBegan().getYear()) <= 6){
 			timeRequirement.setPassed(true);
+			timeRequirement.getDetails().setPassed(true);
 		}
 		List<String> timeNotes = new ArrayList<String>();
 		timeNotes.add("A student must complete all degree requirements within a period of six years after being admitted to the program as a regular student.");
@@ -505,8 +570,11 @@ public class ProgressSummaryGenerator {
 		
 		//gpa requirement
 		RequirementCheck gpaRequirement = new RequirementCheck("GPA");
-		if(getGpa(record.getCoursesTaken()) > 3){
+		float current_gpa = getGpa(record.getCoursesTaken());
+		gpaRequirement.getDetails().setGpa(Float.toString(current_gpa));
+		if(current_gpa > 3){
 			gpaRequirement.setPassed(true);
+			gpaRequirement.getDetails().setPassed(true);
 		}
 		List<String> gpaNotes = new ArrayList<String>();
 		gpaNotes.add("For graduation a student must have a 3.0 GPA on all graduate courses taken and all courses taken at the 700 level or above.");
@@ -520,6 +588,7 @@ public class ProgressSummaryGenerator {
 		}
 		if(milestones.isEmpty()){
 			milestoneRequirement.setPassed(true);
+			milestoneRequirement.getDetails().setPassed(true);
 		}
 		milestoneRequirement.getDetails().setMilestones(record.getMilestonesSet());
 		requirementCheckResults.add(milestoneRequirement);
@@ -575,6 +644,7 @@ public class ProgressSummaryGenerator {
 		}
 		if (coreCoursesTaken.size() == 5){
 			coreCourses.setPassed(true);
+			coreCourses.getDetails().setPassed(true);
 		}
 		coreCourses.getDetails().setCourses(coreCoursesTaken);
 		requirementCheckResults.add(coreCourses);
@@ -594,6 +664,7 @@ public class ProgressSummaryGenerator {
 		}
 		if(credits >= 15){
 			additionalCredits.setPassed(true);
+			additionalCredits.getDetails().setPassed(true);
 		}
 		additionalCredits.getDetails().setCourses(validAdditionalCoursesTaken);
 		requirementCheckResults.add(additionalCredits);
@@ -602,6 +673,7 @@ public class ProgressSummaryGenerator {
 		RequirementCheck expRequirement = new RequirementCheck("EXPERIENCE");
 		if(!course793.isEmpty()){
 			expRequirement.setPassed(true);
+			expRequirement.getDetails().setPassed(true);
 			expRequirement.getDetails().setCourses(course793);
 		}else{
 			List<String> expNotes = new ArrayList<String>();
@@ -612,8 +684,9 @@ public class ProgressSummaryGenerator {
 		
 		//time limit
 		RequirementCheck timeRequirement = new RequirementCheck("TIME_LIMIT_MSE");
-		if(Integer.parseInt(record.getTermBegan().getYear()) <= 6){
+		if(year - Integer.parseInt(record.getTermBegan().getYear()) <= 6){
 			timeRequirement.setPassed(true);
+			timeRequirement.getDetails().setPassed(true);
 		}
 		List<String> timeNotes = new ArrayList<String>();
 		timeNotes.add("A student must complete all degree requirements within a period of six years after being admitted to the program as a regular student.");
@@ -622,8 +695,11 @@ public class ProgressSummaryGenerator {
 		
 		//gpa requirement
 		RequirementCheck gpaRequirement = new RequirementCheck("GPA");
-		if(getGpa(record.getCoursesTaken()) > 3){
+		float current_gpa = getGpa(record.getCoursesTaken());
+		gpaRequirement.getDetails().setGpa(Float.toString(current_gpa));
+		if(current_gpa > 3){
 			gpaRequirement.setPassed(true);
+			gpaRequirement.getDetails().setPassed(true);
 		}
 		List<String> gpaNotes = new ArrayList<String>();
 		gpaNotes.add("For graduation a student must have a 3.0 GPA on all graduate courses taken and all courses taken at the 700 level or above.");
@@ -637,9 +713,103 @@ public class ProgressSummaryGenerator {
 		}
 		if(milestones.isEmpty()){
 			milestoneRequirement.setPassed(true);
+			milestoneRequirement.getDetails().setPassed(true);
 		}
 		milestoneRequirement.getDetails().setMilestones(record.getMilestonesSet());
 		requirementCheckResults.add(milestoneRequirement);
+		
+		return requirementCheckResults;
+	}
+	
+	//INFAS requirement
+	private static List<RequirementCheck> checkINFAS(StudentRecord record){
+		//current year
+		int year = Calendar.getInstance().get(Calendar.YEAR);
+		//hard code the core courses
+		HashSet<String> coreCourseSet = new HashSet<String>();
+		coreCourseSet.add("csce522"); coreCourseSet.add("csce715"); coreCourseSet.add("csce727");
+		
+		//hard code the courses which is not count as additional credits
+		HashSet<String> nonAdditionalCourses = new HashSet<String>();
+		nonAdditionalCourses.add("csce799"); nonAdditionalCourses.add("csce715");nonAdditionalCourses.add("csce727");
+		
+		List<RequirementCheck> requirementCheckResults = new ArrayList<RequirementCheck>();
+		
+		//coreCourses requirement
+		
+		RequirementCheck coreCourses = new RequirementCheck("CORE_COURSES_INFAS");
+		List<CourseTaken> coreCoursesTaken = new ArrayList<CourseTaken>();
+		List<CourseTaken> otherCoursesTaken = new ArrayList<CourseTaken>();
+		for(int i=0; i<record.getCoursesTaken().size();i++){
+			//courses become invalid after 6 years
+			if (year - Integer.parseInt(record.getCoursesTaken().get(i).getTerm().getYear()) <= 6){
+				if(coreCourseSet.contains(record.getCoursesTaken().get(i).getCourse().getId())){
+					coreCoursesTaken.add(record.getCoursesTaken().get(i));
+				}else{
+					otherCoursesTaken.add(record.getCoursesTaken().get(i));
+				}
+			}
+		}
+		if (coreCoursesTaken.size() == 3){
+			coreCourses.setPassed(true);
+			coreCourses.getDetails().setPassed(true);
+		}
+		coreCourses.getDetails().setCourses(coreCoursesTaken);
+		requirementCheckResults.add(coreCourses);
+		
+		//additional credits
+		RequirementCheck additionalCredits = new RequirementCheck("ADDITIONAL_CREDITS_INFAS");
+		List<CourseTaken> validAdditionalCoursesTaken = new ArrayList<CourseTaken>();
+		int credits500 = 0;int credits700 = 0; int non_csce_credits = 0;
+		for (int i=0; i<otherCoursesTaken.size();i++){
+			if(!nonAdditionalCourses.contains(otherCoursesTaken.get(i).getCourse().getId())){
+				if(!record.getCoursesTaken().get(i).getCourse().getId().replaceAll("[0-9]", "").equalsIgnoreCase("csce")){
+					non_csce_credits += Integer.parseInt(record.getCoursesTaken().get(i).getCourse().getNumCredits());
+					if (non_csce_credits > 6){
+						non_csce_credits = 6;
+					}
+				}else{
+					credits500 += Integer.parseInt(otherCoursesTaken.get(i).getCourse().getNumCredits());
+				}
+				//the valid course above 700
+				if (Integer.parseInt(otherCoursesTaken.get(i).getCourse().getId().replaceAll("[^0-9]", "")) > 700){
+					credits700 += Integer.parseInt(otherCoursesTaken.get(i).getCourse().getNumCredits());
+					validAdditionalCoursesTaken.add(otherCoursesTaken.get(i));
+				}
+			}
+		}
+		//for student who also enrolled in master's degree is tricky here, not fully considered yet.
+		if(credits700 >= 9 && credits500+non_csce_credits >= 18){
+			additionalCredits.setPassed(true);
+			additionalCredits.getDetails().setPassed(true);
+		}
+		additionalCredits.getDetails().setCourses(validAdditionalCoursesTaken);
+		requirementCheckResults.add(additionalCredits);
+		
+		
+		//time limit
+		RequirementCheck timeRequirement = new RequirementCheck("TIME_LIMIT_INFAS");
+		if(year - Integer.parseInt(record.getTermBegan().getYear()) <= 6){
+			timeRequirement.setPassed(true);
+			timeRequirement.getDetails().setPassed(true);
+		}
+		List<String> timeNotes = new ArrayList<String>();
+		timeNotes.add("A student must complete all degree requirements within a period of six years after being admitted to the program as a regular student.");
+		timeRequirement.getDetails().setNotes(timeNotes);
+		requirementCheckResults.add(timeRequirement);
+		
+		//gpa requirement
+		RequirementCheck gpaRequirement = new RequirementCheck("GPA");
+		float current_gpa = getGpa(record.getCoursesTaken());
+		gpaRequirement.getDetails().setGpa(Float.toString(current_gpa));
+		if(current_gpa > 3){
+			gpaRequirement.setPassed(true);
+			gpaRequirement.getDetails().setPassed(true);
+		}
+		List<String> gpaNotes = new ArrayList<String>();
+		gpaNotes.add("For graduation a student must have a 3.0 GPA on all graduate courses taken and all courses taken at the 700 level or above.");
+		gpaRequirement.getDetails().setNotes(gpaNotes);
+		requirementCheckResults.add(gpaRequirement);
 		
 		return requirementCheckResults;
 	}
