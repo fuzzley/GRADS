@@ -4,22 +4,19 @@ import java.util.List;
 
 public class RequirementDetail {
 	private String gpa;
-	private boolean passed;
 	private List<CourseTaken> courses;
 	private List<Milestone> milestones;
 	private List<String> notes;
 	
-	public RequirementDetail(String gpa, boolean passed, List<CourseTaken> courses,
+	public RequirementDetail(String gpa, List<CourseTaken> courses,
 			List<Milestone> milestones, List<String> notes){
 		this.setGpa(gpa);
-		this.setPassed(passed);
 		this.setCourses(courses);
 		this.setMilestones(milestones);
 		this.setNotes(notes);
 	}
 	
 	public RequirementDetail(){
-		this.passed = false;
 	}
 
 	public String getGpa() {
@@ -28,14 +25,6 @@ public class RequirementDetail {
 
 	public void setGpa(String gpa) {
 		this.gpa = gpa;
-	}
-
-	public boolean isPassed() {
-		return passed;
-	}
-
-	public void setPassed(boolean passed) {
-		this.passed = passed;
 	}
 
 	public List<CourseTaken> getCourses() {
