@@ -15,7 +15,7 @@ public class Session {
 	 * Get the currently logged in user id.
 	 * @return Currently logged in user id.
 	 */
-	public String getUser() {
+	public static String getUser() {
 		return userId;
 	}
 	

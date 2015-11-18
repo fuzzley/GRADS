@@ -1,6 +1,9 @@
 package edu.sc.csce740.model;
 
 public class User {	
+	public static final String GPC_ROLE = "GPC";
+	public static final String STUDENT_ROLE = "Student";
+	
 	private String id;
 	private String firstName;
 	private String lastName;

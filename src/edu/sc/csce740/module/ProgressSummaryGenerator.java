@@ -41,6 +41,7 @@ public class ProgressSummaryGenerator {
 		ProgressSummary ps = new ProgressSummary(record.getStudent(),
 				record.getDepartment(), record.getTermBegan(),record.getDegreeSought(), 
 				record.getCertificateSought(), record.getAdvisors(), record.getCommittee(), requirementCheckResults);
+
 		return ps;
 	}
 	

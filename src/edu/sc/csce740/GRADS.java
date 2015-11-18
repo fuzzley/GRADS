@@ -2,12 +2,8 @@ package edu.sc.csce740;
 
 import java.util.List;
 
-import edu.sc.csce740.exception.CoursesNotLoadedException;
-import edu.sc.csce740.exception.StudentRecordsNotLoadedException;
-import edu.sc.csce740.exception.UsersNotLoadedException;
-import edu.sc.csce740.model.Course;
-import edu.sc.csce740.model.ProgressSummary;
-import edu.sc.csce740.model.StudentRecord;
+import edu.sc.csce740.exception.*;
+import edu.sc.csce740.model.*;
 import edu.sc.csce740.module.*;
 
 public class GRADS implements GRADSIntf {
@@ -28,47 +24,93 @@ public class GRADS implements GRADSIntf {
 	}
 
 	@Override
-	public void setUser(String userId) throws Exception {
-		// TODO Auto-generated method stub
+	public void setUser(String userId) throws UserNotFoundException {
+		User user = DataStore.getPermissionByUserId(userId);
+		if (user == null) {
+			throw new UserNotFoundException();
+		} //else
 		
+		Session.setUser(userId);
 	}
 
 	@Override
-	public void clearSession() throws Exception {
-		// TODO Auto-generated method stub
+	public void clearSession() throws NoUserSetInSessionException {
+		if (Session.getUser() == null) {
+			throw new NoUserSetInSessionException();
+		} //else
 		
+		Session.clearSession();		
 	}
 
 	@Override
 	public String getUser() {
-		// TODO Auto-generated method stub
-		return null;
+		return Session.getUser();
 	}
 
 	@Override
-	public List<String> getStudentIDs() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public List<String> getStudentIDs() throws NoUserSetInSessionException, LoggedInUserDoesNotHavePermissionException {
+		String loggedInUserId = Session.getUser();
+		if (loggedInUserId == null) {
+			throw new NoUserSetInSessionException();
+		} //else
+		
+		User loggedInUser = DataStore.getPermissionByUserId(loggedInUserId);
+		if (loggedInUser.getRole() != User.GPC_ROLE) {
+			throw new LoggedInUserDoesNotHavePermissionException();
+		} //else
+		
+		return DataStore.getStudentIDs();
 	}
 
 	@Override
-	public StudentRecord getTranscript(String userId) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public StudentRecord getTranscript(String userId) throws NoUserSetInSessionException, LoggedInUserDoesNotHavePermissionException, StudentRecordNotFoundException {
+		String loggedInUserId = Session.getUser();
+		if (loggedInUserId == null) {
+			throw new NoUserSetInSessionException();
+		} //else
+		
+		User loggedInUser = DataStore.getPermissionByUserId(loggedInUserId);
+		if (loggedInUser.getRole() != User.GPC_ROLE && !loggedInUserId.equals(userId)) {
+			throw new LoggedInUserDoesNotHavePermissionException();
+		} //else
+		
+		 return TranscriptManager.getTranscript(userId);
 	}
 
 	@Override
 	public void updateTranscript(String userId, StudentRecord transcript,
-			Boolean permanent) throws Exception {
-		// TODO Auto-generated method stub
+			Boolean permanent) throws NoUserSetInSessionException, LoggedInUserDoesNotHavePermissionException, StudentRecordNotFoundException {
+		String loggedInUserId = Session.getUser();
+		if (loggedInUserId == null) {
+			throw new NoUserSetInSessionException();
+		} //else
 		
+		User loggedInUser = DataStore.getPermissionByUserId(loggedInUserId);
+		if (loggedInUser.getRole() != User.GPC_ROLE && !loggedInUserId.equals(userId)) {
+			throw new LoggedInUserDoesNotHavePermissionException();
+		} //else
+		
+		if (loggedInUserId.equals(userId) && permanent) {
+			throw new LoggedInUserDoesNotHavePermissionException();
+		} //else
+		
+		TranscriptManager.updateTranscript(userId,  transcript, permanent);
 	}
 
 	@Override
 	public void addNote(String userId, String note, Boolean permanent)
-			throws Exception {
-		// TODO Auto-generated method stub
+			 throws NoUserSetInSessionException, LoggedInUserDoesNotHavePermissionException, StudentRecordNotFoundException {
+		String loggedInUserId = Session.getUser();
+		if (loggedInUserId == null) {
+			throw new NoUserSetInSessionException();
+		} //else
 		
+		User loggedInUser = DataStore.getPermissionByUserId(loggedInUserId);
+		if (loggedInUser.getRole() != User.GPC_ROLE) {
+			throw new LoggedInUserDoesNotHavePermissionException();
+		} //else
+		
+		TranscriptManager.addNote(userId, note, permanent);
 	}
 
 	@Override
