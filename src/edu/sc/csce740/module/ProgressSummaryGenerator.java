@@ -139,16 +139,12 @@ public class ProgressSummaryGenerator {
 	private static RequirementCheck getTimeLimitRequirement(int limit, StudentRecord record, String name){
 		RequirementCheck timeRequirement = new RequirementCheck(name);
 		if(year - Integer.parseInt(record.getTermBegan().getYear()) <= 8){
-			if(record.getTermBegan().getSemester().equalsIgnoreCase("SPRING") && month <= 4){
+			String semester = record.getTermBegan().getSemester();
+			if((semester.equalsIgnoreCase("SPRING") && month <= 4)
+				|| (semester.equalsIgnoreCase("SUMMER") && month <= 7) 
+				|| (semester.equalsIgnoreCase("FALL") && month <= 12)){
 				timeRequirement.setPassed(true);
 			}
-			else if(record.getTermBegan().getSemester().equalsIgnoreCase("SUMMBER") && month <= 7){
-				timeRequirement.setPassed(true);
-			}
-			else if(record.getTermBegan().getSemester().equalsIgnoreCase("FALL") && month <= 12){
-				timeRequirement.setPassed(true);
-			}
-			
 		}
 		List<String> timeNotes = new ArrayList<String>();
 		timeNotes.add("A student must complete all degree requirements within a period of eight years after being admitted to the program as a regular student.");
@@ -235,13 +231,20 @@ public class ProgressSummaryGenerator {
 		for(int i=0; i<record.getCoursesTaken().size();i++){
 			//courses become invalid after 6 years
 			if (year - Integer.parseInt(record.getCoursesTaken().get(i).getTerm().getYear()) <= 6){
-				if(coreCourseSet.contains(record.getCoursesTaken().get(i).getCourse().getId())){
-					coreCoursesTaken.add(record.getCoursesTaken().get(i));
-				}else{
-					otherCoursesTaken.add(record.getCoursesTaken().get(i));
-					if(record.getCoursesTaken().get(i).getCourse().getId().equalsIgnoreCase("csce899")){
-						course899.add(record.getCoursesTaken().get(i));
-						credits899 += Integer.parseInt(record.getCoursesTaken().get(i).getCourse().getNumCredits());
+				String semester = record.getTermBegan().getSemester();
+				//acurate time based on semester
+				if((semester.equalsIgnoreCase("SPRING") && month <= 4)
+					|| (semester.equalsIgnoreCase("SUMMER") && month <= 7) 
+					|| (semester.equalsIgnoreCase("FALL") && month <= 12)){
+					
+					if(coreCourseSet.contains(record.getCoursesTaken().get(i).getCourse().getId())){
+						coreCoursesTaken.add(record.getCoursesTaken().get(i));
+					}else{
+						otherCoursesTaken.add(record.getCoursesTaken().get(i));
+						if(record.getCoursesTaken().get(i).getCourse().getId().equalsIgnoreCase("csce899")){
+							course899.add(record.getCoursesTaken().get(i));
+							credits899 += Integer.parseInt(record.getCoursesTaken().get(i).getCourse().getNumCredits());
+						}
 					}
 				}
 			}
@@ -364,13 +367,19 @@ public class ProgressSummaryGenerator {
 		for(int i=0; i<record.getCoursesTaken().size();i++){
 			//courses become invalid after 6 years
 			if (year - Integer.parseInt(record.getCoursesTaken().get(i).getTerm().getYear()) <= 6){
-				if(coreCourseSet.contains(record.getCoursesTaken().get(i).getCourse().getId())){
-					coreCoursesTaken.add(record.getCoursesTaken().get(i));
-				}else{
-					otherCoursesTaken.add(record.getCoursesTaken().get(i));
-					if(record.getCoursesTaken().get(i).getCourse().getId().equalsIgnoreCase("csce799")){
-						course799.add(record.getCoursesTaken().get(i));
-						credits799 += Integer.parseInt(record.getCoursesTaken().get(i).getCourse().getNumCredits());
+				String semester = record.getTermBegan().getSemester();
+				//acurate time based on semester
+				if((semester.equalsIgnoreCase("SPRING") && month <= 4)
+					|| (semester.equalsIgnoreCase("SUMMER") && month <= 7) 
+					|| (semester.equalsIgnoreCase("FALL") && month <= 12)){
+					if(coreCourseSet.contains(record.getCoursesTaken().get(i).getCourse().getId())){
+						coreCoursesTaken.add(record.getCoursesTaken().get(i));
+					}else{
+						otherCoursesTaken.add(record.getCoursesTaken().get(i));
+						if(record.getCoursesTaken().get(i).getCourse().getId().equalsIgnoreCase("csce799")){
+							course799.add(record.getCoursesTaken().get(i));
+							credits799 += Integer.parseInt(record.getCoursesTaken().get(i).getCourse().getNumCredits());
+						}
 					}
 				}
 			}
@@ -491,10 +500,17 @@ public class ProgressSummaryGenerator {
 		for(int i=0; i<record.getCoursesTaken().size();i++){
 			//courses become invalid after 6 years
 			if (year - Integer.parseInt(record.getCoursesTaken().get(i).getTerm().getYear()) <= 6){
-				if(coreCourseSet.contains(record.getCoursesTaken().get(i).getCourse().getId())){
-					coreCoursesTaken.add(record.getCoursesTaken().get(i));
-				}else{
-					otherCoursesTaken.add(record.getCoursesTaken().get(i));
+				String semester = record.getTermBegan().getSemester();
+				//acurate time based on semester
+				if((semester.equalsIgnoreCase("SPRING") && month <= 4)
+					|| (semester.equalsIgnoreCase("SUMMER") && month <= 7) 
+					|| (semester.equalsIgnoreCase("FALL") && month <= 12)){
+					
+					if(coreCourseSet.contains(record.getCoursesTaken().get(i).getCourse().getId())){
+						coreCoursesTaken.add(record.getCoursesTaken().get(i));
+					}else{
+						otherCoursesTaken.add(record.getCoursesTaken().get(i));
+					}
 				}
 			}
 		}
@@ -608,12 +624,19 @@ public class ProgressSummaryGenerator {
 		for(int i=0; i<record.getCoursesTaken().size();i++){
 			//courses become invalid after 6 years
 			if (year - Integer.parseInt(record.getCoursesTaken().get(i).getTerm().getYear()) <= 6){
-				if(coreCourseSet.contains(record.getCoursesTaken().get(i).getCourse().getId())){
-					coreCoursesTaken.add(record.getCoursesTaken().get(i));
-				}else{
-					otherCoursesTaken.add(record.getCoursesTaken().get(i));
-					if(record.getCoursesTaken().get(i).getCourse().getId().equalsIgnoreCase("csce793")){
-						course793.add(record.getCoursesTaken().get(i));
+				String semester = record.getTermBegan().getSemester();
+				//acurate time based on semester
+				if((semester.equalsIgnoreCase("SPRING") && month <= 4)
+					|| (semester.equalsIgnoreCase("SUMMER") && month <= 7) 
+					|| (semester.equalsIgnoreCase("FALL") && month <= 12)){
+					
+					if(coreCourseSet.contains(record.getCoursesTaken().get(i).getCourse().getId())){
+						coreCoursesTaken.add(record.getCoursesTaken().get(i));
+					}else{
+						otherCoursesTaken.add(record.getCoursesTaken().get(i));
+						if(record.getCoursesTaken().get(i).getCourse().getId().equalsIgnoreCase("csce793")){
+							course793.add(record.getCoursesTaken().get(i));
+						}
 					}
 				}
 			}
@@ -692,10 +715,16 @@ public class ProgressSummaryGenerator {
 		for(int i=0; i<record.getCoursesTaken().size();i++){
 			//courses become invalid after 6 years
 			if (year - Integer.parseInt(record.getCoursesTaken().get(i).getTerm().getYear()) <= 6){
-				if(coreCourseSet.contains(record.getCoursesTaken().get(i).getCourse().getId())){
-					coreCoursesTaken.add(record.getCoursesTaken().get(i));
-				}else{
-					otherCoursesTaken.add(record.getCoursesTaken().get(i));
+				String semester = record.getTermBegan().getSemester();
+				//acurate time based on semester
+				if((semester.equalsIgnoreCase("SPRING") && month <= 4)
+					|| (semester.equalsIgnoreCase("SUMMER") && month <= 7) 
+					|| (semester.equalsIgnoreCase("FALL") && month <= 12)){
+					if(coreCourseSet.contains(record.getCoursesTaken().get(i).getCourse().getId())){
+						coreCoursesTaken.add(record.getCoursesTaken().get(i));
+					}else{
+						otherCoursesTaken.add(record.getCoursesTaken().get(i));
+					}
 				}
 			}
 		}
