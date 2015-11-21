@@ -1,7 +1,11 @@
 package edu.sc.csce740.module;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -13,14 +17,21 @@ import edu.sc.csce740.model.*;
 
 public class DataStore {
 	public static List<StudentRecord> studentRecords;
+	private static List<StudentRecord> studentRecordsOriginal;
+	private static String studentRecordsFileName;
 	public static List<Course> courses;
+	private static List<Course> coursesOriginal;
+	private static String coursesFileName;
 	public static List<User> users;
+	public static List<User> usersOriginal;
+	private static String usersFileName;
 	
 	/**
 	 * Load a list of courses from the file at the location provided by "fileName"
 	 * @param fileName The path of the courses file.
 	 */
 	public static void loadCourses(String fileName) throws CoursesNotLoadedException {
+		coursesFileName = fileName;
 		String coursesStr = null;
 		BufferedReader br = null;
 		try {
@@ -45,7 +56,9 @@ public class DataStore {
 		
 		Gson gson = new Gson();
 		try {
-			courses = Arrays.asList(gson.fromJson(coursesStr, Course[].class));
+			Course[] courses = gson.fromJson(coursesStr, Course[].class);
+			DataStore.courses = Arrays.asList(courses);
+			DataStore.coursesOriginal = Arrays.asList(courses);
 		} catch (Exception ex) {
 			throw new CoursesNotLoadedException();
 		}
@@ -56,6 +69,7 @@ public class DataStore {
 	 * @param fileName The path of the student records file.
 	 */
 	public static void loadRecords(String fileName) throws StudentRecordsNotLoadedException {
+		studentRecordsFileName = fileName;
 		String recordsStr = null;
 		BufferedReader br = null;
 		try {
@@ -80,7 +94,9 @@ public class DataStore {
 		
 		Gson gson = new Gson();
 		try {
-			studentRecords = Arrays.asList(gson.fromJson(recordsStr, StudentRecord[].class));
+			StudentRecord[] studentRecords = gson.fromJson(recordsStr, StudentRecord[].class);
+			DataStore.studentRecords = Arrays.asList(studentRecords);
+			DataStore.studentRecordsOriginal = Arrays.asList(studentRecords);
 		} catch (Exception ex) {
 			throw new StudentRecordsNotLoadedException();
 		}
@@ -91,6 +107,7 @@ public class DataStore {
 	 * @param fileName The path of the users file.
 	 */
 	public static void loadUsers(String fileName) throws UsersNotLoadedException {
+		usersFileName = fileName;
 		String usersStr = null;
 		BufferedReader br = null;
 		try {
@@ -115,12 +132,65 @@ public class DataStore {
 		
 		Gson gson = new Gson();
 		try {
-			users = Arrays.asList(gson.fromJson(usersStr, User[].class));
+			User[] users = gson.fromJson(usersStr, User[].class);
+			DataStore.users = Arrays.asList(users);
+			DataStore.usersOriginal = Arrays.asList(users);
 		} catch (Exception ex) {
 			throw new UsersNotLoadedException();
 		}
 	}
 
+	private static void saveStudentRecords(String fileName, List<StudentRecord> studentRecords) throws StudentRecordsNotSavedException {
+		Gson gson = new Gson();
+		String json = gson.toJson(studentRecords);
+		
+		try {
+			File myFile = new File(fileName);
+	        myFile.createNewFile();
+	        FileOutputStream fOut = new FileOutputStream(myFile);
+	        OutputStreamWriter myOutWriter = new OutputStreamWriter(fOut);
+	        myOutWriter.append(json);
+	        myOutWriter.close();
+	        fOut.close();
+		} catch (Exception ex) {
+			throw new StudentRecordsNotSavedException();
+		}
+	}
+
+	private static void saveCourses(String fileName, List<Course> courses) throws CoursesNotSavedException {
+		Gson gson = new Gson();
+		String json = gson.toJson(courses);
+		
+		try {
+			File myFile = new File(fileName);
+	        myFile.createNewFile();
+	        FileOutputStream fOut = new FileOutputStream(myFile);
+	        OutputStreamWriter myOutWriter = new OutputStreamWriter(fOut);
+	        myOutWriter.append(json);
+	        myOutWriter.close();
+	        fOut.close();
+		} catch (Exception ex) {
+			throw new CoursesNotSavedException();
+		}
+	}
+
+	private static void saveUsers(String fileName, List<User> users) throws UsersNotSavedException {
+		Gson gson = new Gson();
+		String json = gson.toJson(users);
+		
+		try {
+			File myFile = new File(fileName);
+	        myFile.createNewFile();
+	        FileOutputStream fOut = new FileOutputStream(myFile);
+	        OutputStreamWriter myOutWriter = new OutputStreamWriter(fOut);
+	        myOutWriter.append(json);
+	        myOutWriter.close();
+	        fOut.close();
+		} catch (Exception ex) {
+			throw new UsersNotSavedException();
+		}
+	}
+	
 	/**
 	 * Return a list of student ids based on the student records loaded in memory.
 	 * @return List of student ids.
@@ -144,7 +214,7 @@ public class DataStore {
 	 * @param permanent Indicates whether the change is permanent or temporary.
 	 * @throws StudentRecordNotFoundException
 	 */
-	public static void addNote(String userId, String note, boolean permanent) throws StudentRecordNotFoundException {
+	public static void addNote(String userId, String note, boolean permanent) throws StudentRecordNotFoundException, StudentRecordsNotSavedException {
 		StudentRecord record = getTranscript(userId);
 		if (record == null) {
 			throw new StudentRecordNotFoundException();
@@ -160,7 +230,11 @@ public class DataStore {
 		record.setNotes(notes);
 		
 		if (permanent) {
-			//TODO: save student records
+			int index = studentRecordsOriginal.indexOf(record);
+			if (index >= 0) {
+				studentRecordsOriginal.set(index, record);
+				saveStudentRecords(studentRecordsFileName, studentRecordsOriginal);
+			}
 		}
 	}
 	
@@ -214,7 +288,7 @@ public class DataStore {
 	 * @param permanent Indicates whether the change is permanent or temporary.
 	 * @throws StudentRecordNotFoundException
 	 */
-	public static void updateTranscript(String userId, StudentRecord transcript, boolean permanent) throws StudentRecordNotFoundException {
+	public static void updateTranscript(String userId, StudentRecord transcript, boolean permanent) throws StudentRecordNotFoundException, StudentRecordsNotSavedException {
 		StudentRecord record = getTranscript(userId);
 		if (record == null) {
 			throw new StudentRecordNotFoundException();
@@ -229,7 +303,11 @@ public class DataStore {
 		studentRecords.set(indexOfRecord, transcript);;
 		
 		if (permanent) {
-			//TODO: save student records
+			int index = studentRecordsOriginal.indexOf(record);
+			if (index >= 0) {
+				studentRecordsOriginal.set(index, record);
+				saveStudentRecords(studentRecordsFileName, studentRecordsOriginal);
+			}
 		}
 	}
 }

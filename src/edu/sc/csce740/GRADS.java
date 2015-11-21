@@ -78,8 +78,8 @@ public class GRADS implements GRADSIntf {
 	}
 
 	@Override
-	public void updateTranscript(String userId, StudentRecord transcript,
-			Boolean permanent) throws NoUserSetInSessionException, LoggedInUserDoesNotHavePermissionException, StudentRecordNotFoundException {
+	public void updateTranscript(String userId, StudentRecord transcript, Boolean permanent) 
+			throws NoUserSetInSessionException, LoggedInUserDoesNotHavePermissionException, StudentRecordNotFoundException, StudentRecordsNotSavedException {
 		String loggedInUserId = Session.getUser();
 		if (loggedInUserId == null) {
 			throw new NoUserSetInSessionException();
@@ -99,7 +99,7 @@ public class GRADS implements GRADSIntf {
 
 	@Override
 	public void addNote(String userId, String note, Boolean permanent)
-			 throws NoUserSetInSessionException, LoggedInUserDoesNotHavePermissionException, StudentRecordNotFoundException {
+			 throws NoUserSetInSessionException, LoggedInUserDoesNotHavePermissionException, StudentRecordNotFoundException, StudentRecordsNotSavedException {
 		String loggedInUserId = Session.getUser();
 		if (loggedInUserId == null) {
 			throw new NoUserSetInSessionException();
