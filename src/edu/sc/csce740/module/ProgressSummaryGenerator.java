@@ -112,6 +112,27 @@ public class ProgressSummaryGenerator {
 		return ps;
 	}
 	
+	//get additional credits requirement
+	private static RequirementCheck getAdditionalCreditsRequirement(List<CourseTaken> otherCoursesTaken, 
+			HashSet<String> nonAdditionalCourses, List<String> notes, String name, int limit){
+		RequirementCheck additionalCredits = new RequirementCheck(name);
+		int credits = 0;
+		for (int i=0; i<otherCoursesTaken.size();i++){
+			if(!nonAdditionalCourses.contains(otherCoursesTaken.get(i).getCourse().getId())){
+				//the valid course must be above 700
+				if (Integer.parseInt(otherCoursesTaken.get(i).getCourse().getId().replaceAll("[^0-9]", "")) > 700
+						&& otherCoursesTaken.get(i).getCourse().getId().replaceAll("[0-9]", "").equalsIgnoreCase("csce")){
+					credits += Integer.parseInt(otherCoursesTaken.get(i).getCourse().getNumCredits());
+				}
+			}
+		}
+		if(credits >= limit){
+			additionalCredits.setPassed(true);
+		}
+		additionalCredits.getDetails().setNotes(notes);
+		return additionalCredits;
+	}
+	
 	//gpa calculation
 	private static float getGpa(List<CourseTaken>courses){
 		float gpa = 0; float credits = 0; float gradesTimesCredits = 0; int credit = 0; int grade = 0;
@@ -266,22 +287,15 @@ public class ProgressSummaryGenerator {
 		requirementCheckResults.add(coreCourses);
 		
 		//additional credits
-		RequirementCheck additionalCredits = new RequirementCheck("ADDITIONAL_CREDITS_PHD");
-		List<CourseTaken> validAdditionalCoursesTaken = new ArrayList<CourseTaken>();
-		int credits = 0;
-		for (int i=0; i<otherCoursesTaken.size();i++){
-			if(!nonAdditionalCourses.contains(otherCoursesTaken.get(i).getCourse().getId())){
-				//the valid course must be above 700
-				if (Integer.parseInt(otherCoursesTaken.get(i).getCourse().getId().replaceAll("[^0-9]", "")) > 700){
-					credits += Integer.parseInt(otherCoursesTaken.get(i).getCourse().getNumCredits());
-					validAdditionalCoursesTaken.add(otherCoursesTaken.get(i));
-				}
-			}
-		}
-		if(credits >= 20){
-			additionalCredits.setPassed(true);
-		}
-		additionalCredits.getDetails().setCourses(validAdditionalCoursesTaken);
+		List<String> additionalCreditsNotes = new ArrayList<String>();
+		additionalCreditsNotes.add("Students must pass 20 hours of CSCE courses numbered above "
+				+ "700 that are not any of the core courses (excluding CSCE 799 and 899).");
+		
+		additionalCreditsNotes.add("Courses become invalid after six years");
+		
+		RequirementCheck additionalCredits = getAdditionalCreditsRequirement(otherCoursesTaken, nonAdditionalCourses, 
+				additionalCreditsNotes, "ADDITIONAL_CREDITS_PHD", 20);
+		
 		requirementCheckResults.add(additionalCredits);
 		
 		//degree based credits
@@ -291,11 +305,11 @@ public class ProgressSummaryGenerator {
 		int credits500 = 0; int credits700 = 0;
 		for (int i=0; i<otherCoursesTaken.size();i++){
 			if(!nonDegreeCourses.contains(otherCoursesTaken.get(i).getCourse().getId())){
+				validDegreeCoursesTaken.add(otherCoursesTaken.get(i));
 				if (Integer.parseInt(otherCoursesTaken.get(i).getCourse().getId().replaceAll("[^0-9]", "")) > 700
-						&& record.getCoursesTaken().get(i).getCourse().getId().replaceAll("[0-9]", "").equalsIgnoreCase("csce")){
+						&& otherCoursesTaken.get(i).getCourse().getId().replaceAll("[0-9]", "").equalsIgnoreCase("csce")){
 					credits500 += Integer.parseInt(otherCoursesTaken.get(i).getCourse().getNumCredits());
 					credits700 += Integer.parseInt(otherCoursesTaken.get(i).getCourse().getNumCredits());
-					validDegreeCoursesTaken.add(otherCoursesTaken.get(i));
 				}else{
 					credits500 += Integer.parseInt(otherCoursesTaken.get(i).getCourse().getNumCredits());
 				}
@@ -402,22 +416,15 @@ public class ProgressSummaryGenerator {
 		requirementCheckResults.add(coreCourses);
 		
 		//additional credits
-		RequirementCheck additionalCredits = new RequirementCheck("ADDITIONAL_CREDITS_MS");
-		List<CourseTaken> validAdditionalCoursesTaken = new ArrayList<CourseTaken>();
-		int credits = 0;
-		for (int i=0; i<otherCoursesTaken.size();i++){
-			if(!nonAdditionalCourses.contains(otherCoursesTaken.get(i).getCourse().getId())){
-				//the valid course must be above 700
-				if (Integer.parseInt(otherCoursesTaken.get(i).getCourse().getId().replaceAll("[^0-9]", "")) > 700){
-					credits += Integer.parseInt(otherCoursesTaken.get(i).getCourse().getNumCredits());
-					validAdditionalCoursesTaken.add(otherCoursesTaken.get(i));
-				}
-			}
-		}
-		if(credits >= 8){
-			additionalCredits.setPassed(true);
-		}
-		additionalCredits.getDetails().setCourses(validAdditionalCoursesTaken);
+		List<String> additionalCreditsNotes = new ArrayList<String>();
+		additionalCreditsNotes.add("Students must pass 8 hours of CSCE courses numbered above 700 that are "
+				+ "not any of the core courses (excluding CSCE 799)");
+		
+		additionalCreditsNotes.add("CSCE 797 may not be applied toward the degree");
+		
+		RequirementCheck additionalCredits = getAdditionalCreditsRequirement(otherCoursesTaken, nonAdditionalCourses, 
+				additionalCreditsNotes, "ADDITIONAL_CREDITS_MS", 8);
+		
 		requirementCheckResults.add(additionalCredits);
 		
 		//degree based credits
@@ -425,7 +432,7 @@ public class ProgressSummaryGenerator {
 		//all valid degree courses
 		List<CourseTaken> validDegreeCoursesTaken = new ArrayList<CourseTaken>();
 		
-		credits = 0; int non_csce_credits = 0; int csce798_credits = 0;
+		int credits = 0; int non_csce_credits = 0; int csce798_credits = 0;
 		for (int i=0; i<record.getCoursesTaken().size();i++){
 			if(!nonDegreeCourses.contains(record.getCoursesTaken().get(i).getCourse().getId())){
 				validDegreeCoursesTaken.add(record.getCoursesTaken().get(i));
@@ -532,22 +539,15 @@ public class ProgressSummaryGenerator {
 		requirementCheckResults.add(coreCourses);
 		
 		//additional credits
-		RequirementCheck additionalCredits = new RequirementCheck("ADDITIONAL_CREDITS_MENG");
-		List<CourseTaken> validAdditionalCoursesTaken = new ArrayList<CourseTaken>();
-		int credits = 0;
-		for (int i=0; i<otherCoursesTaken.size();i++){
-			if(!nonAdditionalCourses.contains(otherCoursesTaken.get(i).getCourse().getId())){
-				//the valid course must be above 700
-				if (Integer.parseInt(otherCoursesTaken.get(i).getCourse().getId().replaceAll("[^0-9]", "")) > 700){
-					credits += Integer.parseInt(otherCoursesTaken.get(i).getCourse().getNumCredits());
-					validAdditionalCoursesTaken.add(otherCoursesTaken.get(i));
-				}
-			}
-		}
-		if(credits >= 11){
-			additionalCredits.setPassed(true);
-		}
-		additionalCredits.getDetails().setCourses(validAdditionalCoursesTaken);
+		List<String> additionalCreditsNotes = new ArrayList<String>();
+		additionalCreditsNotes.add("Students must pass 11 hours of CSCE courses numbered above 700 that "
+				+ "are not any of the above courses (excluding CSCE 799).");
+		
+		additionalCreditsNotes.add("CSCE 797 may not be applied toward the degree");
+		
+		RequirementCheck additionalCredits = getAdditionalCreditsRequirement(otherCoursesTaken, nonAdditionalCourses, 
+				additionalCreditsNotes, "ADDITIONAL_CREDITS_MENG", 11);
+		
 		requirementCheckResults.add(additionalCredits);
 		
 		//degree based credits
@@ -555,7 +555,7 @@ public class ProgressSummaryGenerator {
 		//all valid degree courses
 		List<CourseTaken> validDegreeCoursesTaken = new ArrayList<CourseTaken>();
 		
-		credits = 0; int non_csce_credits = 0; int csce798_credits = 0;
+		int credits = 0; int non_csce_credits = 0; int csce798_credits = 0;
 		for (int i=0; i<record.getCoursesTaken().size();i++){
 			if(!nonDegreeCourses.contains(record.getCoursesTaken().get(i).getCourse().getId())){
 				validDegreeCoursesTaken.add(record.getCoursesTaken().get(i));
@@ -607,7 +607,7 @@ public class ProgressSummaryGenerator {
 		HashSet<String> coreCourseSet = new HashSet<String>();
 		coreCourseSet.add("csce740"); coreCourseSet.add("csce741"); coreCourseSet.add("csce742");coreCourseSet.add("csce743");coreCourseSet.add("csce747");
 		
-		//hard code the courses which is not count as additional credits
+		//hard code the courses which count as additional credits
 		HashSet<String> additionalCourses = new HashSet<String>();
 		additionalCourses.add("csce510"); additionalCourses.add("csce512"); additionalCourses.add("csce515");additionalCourses.add("csce516");
 		additionalCourses.add("csce520"); additionalCourses.add("csce522"); additionalCourses.add("csce547");additionalCourses.add("csce721");
@@ -660,21 +660,44 @@ public class ProgressSummaryGenerator {
 		
 		//additional credits
 		RequirementCheck additionalCredits = new RequirementCheck("ADDITIONAL_CREDITS_MSE");
-		List<CourseTaken> validAdditionalCoursesTaken = new ArrayList<CourseTaken>();
 		int credits = 0;
 		for (int i=0; i<otherCoursesTaken.size();i++){
 			if(additionalCourses.contains(otherCoursesTaken.get(i).getCourse().getId())){
 				//the valid course must be above 700
-				if (Integer.parseInt(otherCoursesTaken.get(i).getCourse().getId().replaceAll("[^0-9]", "")) > 700){
+				if (Integer.parseInt(otherCoursesTaken.get(i).getCourse().getId().replaceAll("[^0-9]", "")) > 700
+						&& otherCoursesTaken.get(i).getCourse().getId().replaceAll("[0-9]", "").equalsIgnoreCase("csce")){
 					credits += Integer.parseInt(otherCoursesTaken.get(i).getCourse().getNumCredits());
-					validAdditionalCoursesTaken.add(otherCoursesTaken.get(i));
 				}
 			}
 		}
 		if(credits >= 15){
 			additionalCredits.setPassed(true);
 		}
-		additionalCredits.getDetails().setCourses(validAdditionalCoursesTaken);
+		List<String> additionalCreditsNotes = new ArrayList<String>();
+		additionalCreditsNotes.add("Students must pass 15 hours of CSCE courses numbered above 700 that "
+				+ "are not any of the core courses.");
+		
+		additionalCreditsNotes.add("The courses must be taken from the following list:");
+		additionalCreditsNotes.add("CSCE 510 ­ System Programming");
+		additionalCreditsNotes.add("CSCE 512 ­ System Performance Evaluation");
+		additionalCreditsNotes.add("CSCE 515 ­ Computer Network Programming");
+		additionalCreditsNotes.add("CSCE 516 ­ Computer Networks");
+		additionalCreditsNotes.add("CSCE 520 ­ Database System Design");
+		additionalCreditsNotes.add("CSCE 522 ­ Information Security Principles");
+		additionalCreditsNotes.add("CSCE 547 ­ Windows Programming");
+		additionalCreditsNotes.add("CSCE 721 ­ Physical Database Design");
+		additionalCreditsNotes.add("CSCE 723 ­ Advanced Database Design");
+		additionalCreditsNotes.add("CSCE 725 ­ Information Retrieval: Algorithms and Models");
+		additionalCreditsNotes.add("CSCE 744 ­ Object­Oriented Analysis and Design");
+		additionalCreditsNotes.add("CSCE 745 ­ Object­Oriented Programming Methods");
+		additionalCreditsNotes.add("CSCE 767 ­ Interactive Computer Systems");
+		additionalCreditsNotes.add("CSCE 782 ­ Multiagent systems");
+		additionalCreditsNotes.add("CSCE 821 ­ Distributed Database Design");
+		additionalCreditsNotes.add("CSCE 822 ­ Data Mining and Warehousing");
+		additionalCreditsNotes.add("CSCE 826 ­ Cooperative Information Systems");
+		additionalCreditsNotes.add("CSCE 846 ­ Software Reliability and Safety");
+		additionalCreditsNotes.add("MGSC 872 ­ Project Management");
+		additionalCredits.getDetails().setNotes(additionalCreditsNotes);
 		requirementCheckResults.add(additionalCredits);
 		
 		//experience
@@ -760,7 +783,8 @@ public class ProgressSummaryGenerator {
 					credits500 += Integer.parseInt(otherCoursesTaken.get(i).getCourse().getNumCredits());
 				}
 				//the valid course above 700
-				if (Integer.parseInt(otherCoursesTaken.get(i).getCourse().getId().replaceAll("[^0-9]", "")) > 700){
+				if (Integer.parseInt(otherCoursesTaken.get(i).getCourse().getId().replaceAll("[^0-9]", "")) > 700
+						&& otherCoursesTaken.get(i).getCourse().getId().replaceAll("[0-9]", "").equalsIgnoreCase("csce")){
 					credits700 += Integer.parseInt(otherCoursesTaken.get(i).getCourse().getNumCredits());
 					validAdditionalCoursesTaken.add(otherCoursesTaken.get(i));
 				}
