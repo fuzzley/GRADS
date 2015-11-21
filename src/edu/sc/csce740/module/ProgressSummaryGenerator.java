@@ -58,11 +58,12 @@ public class ProgressSummaryGenerator {
 		else if(record.getDegreeSought().getName().equalsIgnoreCase("MSE")){
 			requirementCheckResults = checkMSE(record);
 		}
-		
-		if (record.getCertificateSought().getName().equalsIgnoreCase("INFAS")){
-			List<RequirementCheck> requirementINFAS = checkINFAS(record);
-			for(int i=0; i<requirementINFAS.size();i++){
-				requirementCheckResults.add(requirementINFAS.get(i));
+		if (record.getCertificateSought() != null){
+			if (record.getCertificateSought().getName().equalsIgnoreCase("INFAS")){
+				List<RequirementCheck> requirementINFAS = checkINFAS(record);
+				for(int i=0; i<requirementINFAS.size();i++){
+					requirementCheckResults.add(requirementINFAS.get(i));
+				}
 			}
 		}
 		
@@ -95,10 +96,12 @@ public class ProgressSummaryGenerator {
 			requirementCheckResults = checkMSE(record);
 		}
 		
-		if (record.getCertificateSought().getName().equalsIgnoreCase("INFAS")){
-			List<RequirementCheck> requirementINFAS = checkINFAS(record);
-			for(int i=0; i<requirementINFAS.size();i++){
-				requirementCheckResults.add(requirementINFAS.get(i));
+		if (record.getCertificateSought() != null){
+			if (record.getCertificateSought().getName().equalsIgnoreCase("INFAS")){
+				List<RequirementCheck> requirementINFAS = checkINFAS(record);
+				for(int i=0; i<requirementINFAS.size();i++){
+					requirementCheckResults.add(requirementINFAS.get(i));
+				}
 			}
 		}
 		
