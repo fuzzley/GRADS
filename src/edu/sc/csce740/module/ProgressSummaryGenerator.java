@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 
+import edu.sc.csce740.exception.StudentRecordNotFoundException;
 import edu.sc.csce740.model.*;
 import edu.sc.csce740.module.DataStore;
 
@@ -39,8 +40,11 @@ public class ProgressSummaryGenerator {
 	private static int year = Calendar.getInstance().get(Calendar.YEAR);
 	private static int month = Calendar.getInstance().get(Calendar.MONTH);
 	
-	public static ProgressSummary generateProgressSummary(String studentId){
+	public static ProgressSummary generateProgressSummary(String studentId) throws StudentRecordNotFoundException{
 		StudentRecord record = DataStore.getTranscript(studentId);
+		if (record == null) {
+			throw new StudentRecordNotFoundException();
+		}
 		List<RequirementCheck> requirementCheckResults = new ArrayList<RequirementCheck>();
 		if(record.getDegreeSought().getName().equalsIgnoreCase("PHD")){
 			requirementCheckResults = checkPhD(record);
@@ -55,7 +59,7 @@ public class ProgressSummaryGenerator {
 			requirementCheckResults = checkMSE(record);
 		}
 		
-		if (record.getDegreeSought().getName().equalsIgnoreCase("MSE")){
+		if (record.getCertificateSought().getName().equalsIgnoreCase("INFAS")){
 			List<RequirementCheck> requirementINFAS = checkINFAS(record);
 			for(int i=0; i<requirementINFAS.size();i++){
 				requirementCheckResults.add(requirementINFAS.get(i));
@@ -69,8 +73,11 @@ public class ProgressSummaryGenerator {
 		return ps;
 	}
 	
-	public static ProgressSummary simulateCourses(String studentId, List<CourseTaken> courses){
+	public static ProgressSummary simulateCourses(String studentId, List<CourseTaken> courses) throws StudentRecordNotFoundException{
 		StudentRecord record = DataStore.getTranscript(studentId);
+		if (record == null) {
+			throw new StudentRecordNotFoundException();
+		}
 		//adding simulated courses to record
 		record.getCoursesTaken().addAll(courses);
 		
@@ -88,7 +95,7 @@ public class ProgressSummaryGenerator {
 			requirementCheckResults = checkMSE(record);
 		}
 		
-		if (record.getDegreeSought().getName().equalsIgnoreCase("INFAS")){
+		if (record.getCertificateSought().getName().equalsIgnoreCase("INFAS")){
 			List<RequirementCheck> requirementINFAS = checkINFAS(record);
 			for(int i=0; i<requirementINFAS.size();i++){
 				requirementCheckResults.add(requirementINFAS.get(i));
@@ -281,7 +288,8 @@ public class ProgressSummaryGenerator {
 		int credits500 = 0; int credits700 = 0;
 		for (int i=0; i<otherCoursesTaken.size();i++){
 			if(!nonDegreeCourses.contains(otherCoursesTaken.get(i).getCourse().getId())){
-				if (Integer.parseInt(otherCoursesTaken.get(i).getCourse().getId().replaceAll("[^0-9]", "")) > 700){
+				if (Integer.parseInt(otherCoursesTaken.get(i).getCourse().getId().replaceAll("[^0-9]", "")) > 700
+						&& record.getCoursesTaken().get(i).getCourse().getId().replaceAll("[0-9]", "").equalsIgnoreCase("csce")){
 					credits500 += Integer.parseInt(otherCoursesTaken.get(i).getCourse().getNumCredits());
 					credits700 += Integer.parseInt(otherCoursesTaken.get(i).getCourse().getNumCredits());
 					validDegreeCoursesTaken.add(otherCoursesTaken.get(i));
@@ -296,7 +304,7 @@ public class ProgressSummaryGenerator {
 					degreeBasedCredits.setPassed(true);
 				}
 			}
-			else if(credits700 > 24 && credits500 >= 48){
+			else if(credits700 >= 24 && credits500 >= 48){
 				degreeBasedCredits.setPassed(true);
 			}
 		}
@@ -755,8 +763,18 @@ public class ProgressSummaryGenerator {
 				}
 			}
 		}
-		//for student who also enrolled in master's degree is tricky here, not fully considered yet.
-		if(credits700 >= 9 && credits500+non_csce_credits >= 18){
+		
+		//hard code possible master's degree
+		HashSet<String> master = new HashSet<String>();
+		master.add("MS"); master.add("MENG"); master.add("MSE");
+				
+		//for student who also enrolled in master's degree. 9 credits should be subtracted
+		if(master.contains(record.getDegreeSought().getName())){
+			if(credits700 >= 9 && credits500+non_csce_credits >= 27){
+				additionalCredits.setPassed(true);
+			}
+		}
+		else if(credits700 >= 9 && credits500+non_csce_credits >= 18){
 			additionalCredits.setPassed(true);
 		}
 		additionalCredits.getDetails().setCourses(validAdditionalCoursesTaken);

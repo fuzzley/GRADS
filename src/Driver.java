@@ -1,4 +1,5 @@
 import edu.sc.csce740.GRADS;
+import edu.sc.csce740.exception.StudentRecordNotFoundException;
 import edu.sc.csce740.module.*;
 import edu.sc.csce740.model.*;
 
@@ -21,9 +22,16 @@ public class Driver {
 			System.out.println(ex.getMessage());
 		}
 		
-		ProgressSummary ps = ProgressSummaryGenerator.generateProgressSummary("mhunt");
-		Gson gson = new GsonBuilder().setPrettyPrinting().create();
-		System.out.println(gson.toJson(ps));
+		ProgressSummary ps;
+		try {
+			ps = ProgressSummaryGenerator.generateProgressSummary("mhunt");
+			Gson gson = new GsonBuilder().setPrettyPrinting().create();
+			System.out.println(gson.toJson(ps));
+		} catch (StudentRecordNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		
 		System.out.println("done");
 	}
