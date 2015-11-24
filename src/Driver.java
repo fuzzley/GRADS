@@ -27,7 +27,7 @@ public class Driver {
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		ProgressSummary ps;
 		try {
-			ps = ProgressSummaryGenerator.generateProgressSummary("mhunt");
+			ps = ProgressSummaryGenerator.generateProgressSummary("ms1");
 			System.out.println(gson.toJson(ps));
 		} catch (StudentRecordNotFoundException e) {
 			// TODO Auto-generated catch block
