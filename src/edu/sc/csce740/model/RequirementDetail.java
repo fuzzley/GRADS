@@ -16,7 +16,12 @@ public class RequirementDetail {
 		this.setNotes(notes);
 	}
 	
-	public RequirementDetail(){
+
+	public RequirementDetail() {
+		this.gpa = null;
+		this.courses = null;
+		this.milestones = null;
+		this.notes = null;
 	}
 
 	public String getGpa() {
