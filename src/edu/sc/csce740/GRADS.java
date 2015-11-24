@@ -55,7 +55,7 @@ public class GRADS implements GRADSIntf {
 		} //else
 		
 		User loggedInUser = DataStore.getPermissionByUserId(loggedInUserId);
-		if (loggedInUser.getRole() != User.GPC_ROLE) {
+		if (!User.GPC_ROLE.equals(loggedInUser.getRole())) {
 			throw new LoggedInUserDoesNotHavePermissionException();
 		} //else
 		
@@ -70,7 +70,7 @@ public class GRADS implements GRADSIntf {
 		} //else
 		
 		User loggedInUser = DataStore.getPermissionByUserId(loggedInUserId);
-		if (loggedInUser.getRole() != User.GPC_ROLE && !loggedInUserId.equals(userId)) {
+		if (!User.GPC_ROLE.equals(loggedInUser.getRole()) && !loggedInUserId.equals(userId)) {
 			throw new LoggedInUserDoesNotHavePermissionException();
 		} //else
 		
@@ -86,7 +86,7 @@ public class GRADS implements GRADSIntf {
 		} //else
 		
 		User loggedInUser = DataStore.getPermissionByUserId(loggedInUserId);
-		if (loggedInUser.getRole() != User.GPC_ROLE && !loggedInUserId.equals(userId)) {
+		if (!User.GPC_ROLE.equals(loggedInUser.getRole()) && !loggedInUserId.equals(userId)) {
 			throw new LoggedInUserDoesNotHavePermissionException();
 		} //else
 		
@@ -106,7 +106,7 @@ public class GRADS implements GRADSIntf {
 		} //else
 		
 		User loggedInUser = DataStore.getPermissionByUserId(loggedInUserId);
-		if (loggedInUser.getRole() != User.GPC_ROLE) {
+		if (!User.GPC_ROLE.equals(loggedInUser.getRole())) {
 			throw new LoggedInUserDoesNotHavePermissionException();
 		} //else
 		
@@ -116,15 +116,33 @@ public class GRADS implements GRADSIntf {
 	@Override
 	public ProgressSummary generateProgressSummary(String userId)
 			throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		String loggedInUserId = Session.getUser();
+		if (loggedInUserId == null) {
+			throw new NoUserSetInSessionException();
+		} //else
+		
+		User loggedInUser = DataStore.getPermissionByUserId(loggedInUserId);
+		if (!User.GPC_ROLE.equals(loggedInUser.getRole()) && !loggedInUserId.equals(userId)) {
+			throw new LoggedInUserDoesNotHavePermissionException();
+		} //else
+		
+		return ProgressSummaryGenerator.generateProgressSummary(userId);
 	}
 
 	@Override
 	public ProgressSummary simulateCourses(String userId,
 			List<Course> courses) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		String loggedInUserId = Session.getUser();
+		if (loggedInUserId == null) {
+			throw new NoUserSetInSessionException();
+		} //else
+		
+		User loggedInUser = DataStore.getPermissionByUserId(loggedInUserId);
+		if (!User.GPC_ROLE.equals(loggedInUser.getRole()) && !loggedInUserId.equals(userId)) {
+			throw new LoggedInUserDoesNotHavePermissionException();
+		} //else
+		
+		return null; //ProgressSummaryGenerator.simulateCourses(userId, courses);
 	}
 
 }

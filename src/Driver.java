@@ -8,32 +8,43 @@ import com.google.gson.GsonBuilder;
 
 public class Driver {
 	
-	private static String coursesPath = "src/resources/courses.txt";
-	private static String studentRecordsPath = "src/resources/students.txt";
-	private static String usersPath = "src/resources/users.txt";
+	private static String coursesPath = "src/resources/courses.json";
+	private static String studentRecordsPath = "src/resources/students.json";
+	private static String usersPath = "src/resources/users.json";
 
 	public static void main(String[] args) {
 		GRADS grads = new GRADS();
+		
 		try {
 			grads.loadCourses(coursesPath);
 			grads.loadRecords(studentRecordsPath);
 			grads.loadUsers(usersPath);
+			grads.setUser("ggay");
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
 		}
+
+		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+//		ProgressSummary ps;
+//		try {
+//			ps = ProgressSummaryGenerator.generateProgressSummary("mhunt");
+//			System.out.println(gson.toJson(ps));
+//		} catch (StudentRecordNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
+//		
+//		System.out.println("done");
 		
-		ProgressSummary ps;
 		try {
-			ps = ProgressSummaryGenerator.generateProgressSummary("mhunt");
-			Gson gson = new GsonBuilder().setPrettyPrinting().create();
-			System.out.println(gson.toJson(ps));
-		} catch (StudentRecordNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			String studentId = "mhunt";
+//			StudentRecord record = grads.getTranscript(studentId);
+//			grads.addNote(studentId, "Excellent student.", true);
+			System.out.println(gson.toJson(grads.getTranscript(studentId)));
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
-		
-		
-		System.out.println("done");
 	}
 
 }
