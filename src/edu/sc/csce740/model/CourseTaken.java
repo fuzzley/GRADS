@@ -10,6 +10,12 @@ public class CourseTaken {
 		this.setTerm(term);
 		this.setGrade(grade);
 	}
+	
+	public CourseTaken(){
+		this.course = null;
+		this.term = null;
+		this.grade = null;
+	}
 
 	public Course getCourse() {
 		return course;

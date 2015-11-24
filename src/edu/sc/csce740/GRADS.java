@@ -1,5 +1,7 @@
 package edu.sc.csce740;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import edu.sc.csce740.exception.*;
@@ -142,7 +144,25 @@ public class GRADS implements GRADSIntf {
 			throw new LoggedInUserDoesNotHavePermissionException();
 		} //else
 		
-		return null; //ProgressSummaryGenerator.simulateCourses(userId, courses);
+		String year = Calendar.getInstance().get(Calendar.YEAR) + "";
+		int month = Calendar.getInstance().get(Calendar.MONTH);
+		String semester = "";
+		if (month <= 4){
+			semester = "SPRING";
+		}
+		else if(month <= 7){
+			semester = "SUMMER";
+		}else if(month <= 12){
+			semester = "FALL";
+		}
+		Term term = new Term(semester, year);
+		List<CourseTaken> courseTakens = new ArrayList<CourseTaken>();
+		for (int i=0; i<courses.size();i++){
+			//assume the simulated grade is a
+			CourseTaken courseTaken = new CourseTaken(courses.get(i), term, "A");
+			courseTakens.add(courseTaken);
+		}
+		return ProgressSummaryGenerator.simulateCourses(userId, courseTakens);
 	}
 
 }
