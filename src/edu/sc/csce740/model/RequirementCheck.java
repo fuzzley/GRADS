@@ -5,6 +5,12 @@ public class RequirementCheck {
 	private boolean passed;
 	private RequirementDetail details;
 	
+	/**
+	 * 
+	 * @param name
+	 * @param passed
+	 * @param details
+	 */
 	public RequirementCheck(String name, boolean passed, RequirementDetail details){
 		this.setName(name);
 		this.setPassed(passed);

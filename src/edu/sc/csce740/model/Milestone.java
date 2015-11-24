@@ -4,6 +4,11 @@ public class Milestone {
 	private String milestone;
 	private Term term;
 	
+	/**
+	 * 
+	 * @param milestone
+	 * @param term
+	 */
 	public Milestone(String milestone, Term term){
 		this.setMilestone(milestone);
 		this.setTerm(term);

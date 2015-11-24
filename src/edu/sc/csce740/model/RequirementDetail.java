@@ -8,6 +8,13 @@ public class RequirementDetail {
 	private List<Milestone> milestones;
 	private List<String> notes;
 	
+	/**
+	 * 
+	 * @param gpa
+	 * @param courses
+	 * @param milestones
+	 * @param notes
+	 */
 	public RequirementDetail(String gpa, List<CourseTaken> courses,
 			List<Milestone> milestones, List<String> notes){
 		this.setGpa(gpa);

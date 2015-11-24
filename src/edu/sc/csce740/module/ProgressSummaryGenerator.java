@@ -10,109 +10,111 @@ import edu.sc.csce740.exception.StudentRecordNotFoundException;
 import edu.sc.csce740.model.*;
 import edu.sc.csce740.module.DataStore;
 
-/*
- * Parameters for StudentRecord
- *  private Student student;
-	private String department;
-	private Term termBegan;
-	private Degree degreeSought;
-	private Degree certificateSought;
-	private List<Degree> previousDegrees;
-	private List<Professor> advisors;
-	private List<Professor> committee;
-	private List<CourseTaken> coursesTaken;
-	private List<Milestone> milestonesSet;
-	private List<String> notes;
-	
-	Parameters for Summary
-	private Student student;
-	private String department;
-	private Term termBegan;
-	private Degree degreeSought;
-	private Degree certificateSought;
-	private List<Professor> advisors;
-	private List<Professor> committee;
-	private List<RequirementCheck> requirementCheckResults;
+/**
+ * ProgressSummaryGnerator Module. 
+ * Generate student's progress summary given the student's id. 
+ * Simulate student's progress summary given the student's id and a list of simulated courses taken.
+ * @author Mingxiang Zhu
+ * @version 1.0
+ * @since 11/24/2015
  */
-
 public class ProgressSummaryGenerator {
 	//current year
 	private static int year = Calendar.getInstance().get(Calendar.YEAR);
 	private static int month = Calendar.getInstance().get(Calendar.MONTH);
 	
+	/**
+	 * @param studentId Student's identification
+	 * @return ProgressSummary Student's current progress report
+	 * @throws StudentRecordNotFoundException
+	 */
 	public static ProgressSummary generateProgressSummary(String studentId) throws StudentRecordNotFoundException{
-		StudentRecord record = DataStore.getTranscript(studentId);
-		if (record == null) {
+		StudentRecord transcript = DataStore.getTranscript(studentId);
+		if (transcript == null) {
 			throw new StudentRecordNotFoundException();
 		}
 		List<RequirementCheck> requirementCheckResults = new ArrayList<RequirementCheck>();
-		if(record.getDegreeSought().getName().equalsIgnoreCase("PHD")){
-			requirementCheckResults = checkPhD(record);
+		if(transcript.getDegreeSought().getName().equalsIgnoreCase("PHD")){
+			requirementCheckResults = checkPhD(transcript);
 		}
-		else if(record.getDegreeSought().getName().equalsIgnoreCase("MS")){
-			requirementCheckResults = checkMS(record);
+		else if(transcript.getDegreeSought().getName().equalsIgnoreCase("MS")){
+			requirementCheckResults = checkMS(transcript);
 		}
-		else if(record.getDegreeSought().getName().equalsIgnoreCase("MENG")){
-			requirementCheckResults = checkMENG(record);
+		else if(transcript.getDegreeSought().getName().equalsIgnoreCase("MENG")){
+			requirementCheckResults = checkMENG(transcript);
 		}
-		else if(record.getDegreeSought().getName().equalsIgnoreCase("MSE")){
-			requirementCheckResults = checkMSE(record);
+		else if(transcript.getDegreeSought().getName().equalsIgnoreCase("MSE")){
+			requirementCheckResults = checkMSE(transcript);
 		}
-		if (record.getCertificateSought() != null){
-			if (record.getCertificateSought().getName().equalsIgnoreCase("INFAS")){
-				List<RequirementCheck> requirementINFAS = checkINFAS(record);
+		if (transcript.getCertificateSought() != null){
+			if (transcript.getCertificateSought().getName().equalsIgnoreCase("INFAS")){
+				List<RequirementCheck> requirementINFAS = checkINFAS(transcript);
 				for(int i=0; i<requirementINFAS.size();i++){
 					requirementCheckResults.add(requirementINFAS.get(i));
 				}
 			}
 		}
 		
-		ProgressSummary ps = new ProgressSummary(record.getStudent(),
-				record.getDepartment(), record.getTermBegan(),record.getDegreeSought(), 
-				record.getCertificateSought(), record.getAdvisors(), record.getCommittee(), requirementCheckResults);
+		ProgressSummary ps = new ProgressSummary(transcript.getStudent(),
+				transcript.getDepartment(), transcript.getTermBegan(),transcript.getDegreeSought(), 
+				transcript.getCertificateSought(), transcript.getAdvisors(), transcript.getCommittee(), requirementCheckResults);
 
 		return ps;
 	}
 	
+	/**
+	 * @param studentId Student's identification
+	 * @param courses Simulated already taken courses
+	 * @return ProgressSummary student's simulated progress report
+	 * @throws StudentRecordNotFoundException
+	 */
 	public static ProgressSummary simulateCourses(String studentId, List<CourseTaken> courses) throws StudentRecordNotFoundException{
-		StudentRecord record = DataStore.getTranscript(studentId);
-		if (record == null) {
+		StudentRecord transcript = DataStore.getTranscript(studentId);
+		if (transcript == null) {
 			throw new StudentRecordNotFoundException();
 		}
-		//adding simulated courses to record
-		record.getCoursesTaken().addAll(courses);
+		//adding simulated courses to transcript
+		transcript.getCoursesTaken().addAll(courses);
 		
 		List<RequirementCheck> requirementCheckResults = new ArrayList<RequirementCheck>();
-		if(record.getDegreeSought().getName().equalsIgnoreCase("PHD")){
-			requirementCheckResults = checkPhD(record);
+		if(transcript.getDegreeSought().getName().equalsIgnoreCase("PHD")){
+			requirementCheckResults = checkPhD(transcript);
 		}
-		else if(record.getDegreeSought().getName().equalsIgnoreCase("MS")){
-			requirementCheckResults = checkMS(record);
+		else if(transcript.getDegreeSought().getName().equalsIgnoreCase("MS")){
+			requirementCheckResults = checkMS(transcript);
 		}
-		else if(record.getDegreeSought().getName().equalsIgnoreCase("MENG")){
-			requirementCheckResults = checkMENG(record);
+		else if(transcript.getDegreeSought().getName().equalsIgnoreCase("MENG")){
+			requirementCheckResults = checkMENG(transcript);
 		}
-		else if(record.getDegreeSought().getName().equalsIgnoreCase("MSE")){
-			requirementCheckResults = checkMSE(record);
+		else if(transcript.getDegreeSought().getName().equalsIgnoreCase("MSE")){
+			requirementCheckResults = checkMSE(transcript);
 		}
 		
-		if (record.getCertificateSought() != null){
-			if (record.getCertificateSought().getName().equalsIgnoreCase("INFAS")){
-				List<RequirementCheck> requirementINFAS = checkINFAS(record);
+		if (transcript.getCertificateSought() != null){
+			if (transcript.getCertificateSought().getName().equalsIgnoreCase("INFAS")){
+				List<RequirementCheck> requirementINFAS = checkINFAS(transcript);
 				for(int i=0; i<requirementINFAS.size();i++){
 					requirementCheckResults.add(requirementINFAS.get(i));
 				}
 			}
 		}
 		
-		ProgressSummary ps = new ProgressSummary(record.getStudent(),
-				record.getDepartment(), record.getTermBegan(),record.getDegreeSought(), 
-				record.getCertificateSought(), record.getAdvisors(), record.getCommittee(), requirementCheckResults);
+		ProgressSummary ps = new ProgressSummary(transcript.getStudent(),
+				transcript.getDepartment(), transcript.getTermBegan(),transcript.getDegreeSought(), 
+				transcript.getCertificateSought(), transcript.getAdvisors(), transcript.getCommittee(), requirementCheckResults);
 
 		return ps;
 	}
 	
-	//get additional credits requirement
+	/** 
+	 * get additional credits requirement
+	 * @param otherCoursesTaken Taken courses which are not core courses
+	 * @param nonAdditionalCourses A Hashset of course id's which are not considered as additional course requirement for a given degree 
+	 * @param notes The notes to add to the additional credits requirement
+	 * @param name The name of additional credits requirement, must be one of {ADDITIONAL_CREDITS_PHD, ADDITIONAL_CREDITS_MS, ADDITIONAL_CREDITS_MENG, ADDITIONAL_CREDITS_MSE, ADDITIONAL_CREDITS_INFAS}
+	 * @param limit Number of credits needed to meet the requirement
+	 * @return RequirementCheck
+	 */
 	private static RequirementCheck getAdditionalCreditsRequirement(List<CourseTaken> otherCoursesTaken, 
 			HashSet<String> nonAdditionalCourses, List<String> notes, String name, int limit){
 		RequirementCheck additionalCredits = new RequirementCheck(name);
@@ -133,7 +135,11 @@ public class ProgressSummaryGenerator {
 		return additionalCredits;
 	}
 	
-	//gpa calculation
+	/**
+	 * gpa calculation
+	 * @param courses A list of taken courses
+	 * @return gpa The gpa of the taken courses
+	 */
 	private static float getGpa(List<CourseTaken>courses){
 		float gpa = 0; float credits = 0; float gradesTimesCredits = 0; int credit = 0; int grade = 0;
 		for(int i=0; i<courses.size();i++){
@@ -167,10 +173,18 @@ public class ProgressSummaryGenerator {
 		return b.setScale(2,BigDecimal.ROUND_HALF_UP).floatValue();
 	}
 	
-	private static RequirementCheck getTimeLimitRequirement(int limit, StudentRecord record, String name){
+	/**
+	 * get the time limit requirement for a given degree
+	 * @param limit The years limitation for a given degree
+	 * @param transcript The student's current transcript
+	 * @param name The name of time limit requirement, must be one of {TIME_LIMIT_PHD, TIME_LIMIT_MS, TIME_LIMIT_MENG, TIME_LIMIT_MSE, TIME_LIMIT_INFAS}
+	 * @return timeRequirement
+	 */
+	private static RequirementCheck getTimeLimitRequirement(int limit, StudentRecord transcript, String name){
 		RequirementCheck timeRequirement = new RequirementCheck(name);
-		if(year - Integer.parseInt(record.getTermBegan().getYear()) <= 8){
-			String semester = record.getTermBegan().getSemester();
+		if(year - Integer.parseInt(transcript.getTermBegan().getYear()) <= limit){
+			String semester = transcript.getTermBegan().getSemester();
+			//comparing semester according to current month
 			if((semester.equalsIgnoreCase("SPRING") && month <= 4)
 				|| (semester.equalsIgnoreCase("SUMMER") && month <= 7) 
 				|| (semester.equalsIgnoreCase("FALL") && month <= 12)){
@@ -183,9 +197,15 @@ public class ProgressSummaryGenerator {
 		return timeRequirement;
 	}
 	
-	private static RequirementCheck getGpaRequirement(StudentRecord record, String name){
+	/**
+	 * get gpa requirement check
+	 * @param transcript The student's current transcript
+	 * @param name The name of gpa requirement, must be GPA
+	 * @return gpaRequirement
+	 */
+	private static RequirementCheck getGpaRequirement(StudentRecord transcript, String name){
 		RequirementCheck gpaRequirement = new RequirementCheck(name);
-		float current_gpa = getGpa(record.getCoursesTaken());
+		float current_gpa = getGpa(transcript.getCoursesTaken());
 		gpaRequirement.getDetails().setGpa(Float.toString(current_gpa));
 		if(current_gpa > 3){
 			gpaRequirement.setPassed(true);
@@ -196,16 +216,23 @@ public class ProgressSummaryGenerator {
 		return gpaRequirement;
 	}
 	
-	private static RequirementCheck getMilestoneRequirement(HashSet<String> milestones, StudentRecord record, String name){
+	/**
+	 * check milestone requirement
+	 * @param milestones A list of milestones for a given degree
+	 * @param transcript The student's current transcript
+	 * @param name The name of milestone requirement, must be one of {MILESTONES_PHD, MILESTONES_MS, MILESTONES_MENG, MILESTONES_MSE}
+	 * @return milestoneRequirement
+	 */
+	private static RequirementCheck getMilestoneRequirement(HashSet<String> milestones, StudentRecord transcript, String name){
 		RequirementCheck milestoneRequirement = new RequirementCheck(name);
-		for(int i=0; i<record.getMilestonesSet().size();i++){
-			milestones.remove(record.getMilestonesSet().get(i).getMilestone());
+		for(int i=0; i<transcript.getMilestonesSet().size();i++){
+			milestones.remove(transcript.getMilestonesSet().get(i).getMilestone());
 		}
 		List<String> milestoneNotes = new ArrayList<String>();
 		if(milestones.isEmpty()){
 			milestoneRequirement.setPassed(true);
 		}else{
-			
+			//put the incompleted milestones in the nodes
 			for(String s: milestones){
 				milestoneNotes.add("Missing milestone "+s);
 			}
@@ -213,15 +240,16 @@ public class ProgressSummaryGenerator {
 		if (!milestoneNotes.isEmpty()){
 			milestoneRequirement.getDetails().setNotes(milestoneNotes);
 		}
-		milestoneRequirement.getDetails().setMilestones(record.getMilestonesSet());
+		milestoneRequirement.getDetails().setMilestones(transcript.getMilestonesSet());
 		return milestoneRequirement;
 	}
-	/*
-	 * hard code graduation rules
-	 * one of the concern is reuse issue, here every time, several new hashset will be created
+	
+	/**
+	 * PHD requirement
+	 * @param transcript The student's current transcript
+	 * @return requirementCheckResults The requirementCheckResults for PHD
 	 */
-	//PHD requirement
-	private static List<RequirementCheck> checkPhD(StudentRecord record){
+	private static List<RequirementCheck> checkPhD(StudentRecord transcript){
 		//hard code the core courses
 		HashSet<String> coreCourseSet = new HashSet<String>();
 		coreCourseSet.add("csce513"); coreCourseSet.add("csce531"); coreCourseSet.add("csce551"); coreCourseSet.add("csce750");coreCourseSet.add("csce791");
@@ -259,22 +287,22 @@ public class ProgressSummaryGenerator {
 		RequirementCheck coreCourses = new RequirementCheck("CORE_COURSES_PHD");
 		List<CourseTaken> coreCoursesTaken = new ArrayList<CourseTaken>();
 		List<CourseTaken> otherCoursesTaken = new ArrayList<CourseTaken>();
-		for(int i=0; i<record.getCoursesTaken().size();i++){
+		for(int i=0; i<transcript.getCoursesTaken().size();i++){
 			//courses become invalid after 6 years
-			if (year - Integer.parseInt(record.getCoursesTaken().get(i).getTerm().getYear()) <= 6){
-				String semester = record.getTermBegan().getSemester();
+			if (year - Integer.parseInt(transcript.getCoursesTaken().get(i).getTerm().getYear()) <= 6){
+				String semester = transcript.getTermBegan().getSemester();
 				//acurate time based on semester
 				if((semester.equalsIgnoreCase("SPRING") && month <= 4)
 					|| (semester.equalsIgnoreCase("SUMMER") && month <= 7) 
 					|| (semester.equalsIgnoreCase("FALL") && month <= 12)){
 					
-					if(coreCourseSet.contains(record.getCoursesTaken().get(i).getCourse().getId())){
-						coreCoursesTaken.add(record.getCoursesTaken().get(i));
+					if(coreCourseSet.contains(transcript.getCoursesTaken().get(i).getCourse().getId())){
+						coreCoursesTaken.add(transcript.getCoursesTaken().get(i));
 					}else{
-						otherCoursesTaken.add(record.getCoursesTaken().get(i));
-						if(record.getCoursesTaken().get(i).getCourse().getId().equalsIgnoreCase("csce899")){
-							course899.add(record.getCoursesTaken().get(i));
-							credits899 += Integer.parseInt(record.getCoursesTaken().get(i).getCourse().getNumCredits());
+						otherCoursesTaken.add(transcript.getCoursesTaken().get(i));
+						if(transcript.getCoursesTaken().get(i).getCourse().getId().equalsIgnoreCase("csce899")){
+							course899.add(transcript.getCoursesTaken().get(i));
+							credits899 += Integer.parseInt(transcript.getCoursesTaken().get(i).getCourse().getNumCredits());
 						}
 					}
 				}
@@ -315,8 +343,8 @@ public class ProgressSummaryGenerator {
 				}
 			}
 		}
-		for (int i=0; i<record.getPreviousDegrees().size();i++){
-			if(master.contains(record.getPreviousDegrees().get(i).getName())){
+		for (int i=0; i<transcript.getPreviousDegrees().size();i++){
+			if(master.contains(transcript.getPreviousDegrees().get(i).getName())){
 				if (credits700 >= 24){
 					degreeBasedCredits.setPassed(true);
 				}
@@ -337,22 +365,26 @@ public class ProgressSummaryGenerator {
 		requirementCheckResults.add(thesisCredits);
 		
 		//time limit
-		RequirementCheck timeRequirement = getTimeLimitRequirement(8, record, "TIME_LIMIT_PHD");
+		RequirementCheck timeRequirement = getTimeLimitRequirement(8, transcript, "TIME_LIMIT_PHD");
 		requirementCheckResults.add(timeRequirement);
 		
 		//gpa requirement
-		RequirementCheck gpaRequirement = getGpaRequirement(record, "GPA");
+		RequirementCheck gpaRequirement = getGpaRequirement(transcript, "GPA");
 		requirementCheckResults.add(gpaRequirement);
 		
 		//milestone requirement
-		RequirementCheck milestoneRequirement = getMilestoneRequirement(milestones, record, "MILESTONES_PHD");
+		RequirementCheck milestoneRequirement = getMilestoneRequirement(milestones, transcript, "MILESTONES_PHD");
 		requirementCheckResults.add(milestoneRequirement);
 		
 		return requirementCheckResults;
 	}
 	
-	//MS requirement
-	private static List<RequirementCheck> checkMS(StudentRecord record){
+	/**
+	 * MS requirement
+	 * @param transcript The student's current transcript
+	 * @return requirementCheckResults The requirementCheckResults for MS
+	 */
+	private static List<RequirementCheck> checkMS(StudentRecord transcript){
 		//current year
 		int year = Calendar.getInstance().get(Calendar.YEAR);
 		//hard code the core courses
@@ -389,21 +421,21 @@ public class ProgressSummaryGenerator {
 		RequirementCheck coreCourses = new RequirementCheck("CORE_COURSES_MS");
 		List<CourseTaken> coreCoursesTaken = new ArrayList<CourseTaken>();
 		List<CourseTaken> otherCoursesTaken = new ArrayList<CourseTaken>();
-		for(int i=0; i<record.getCoursesTaken().size();i++){
+		for(int i=0; i<transcript.getCoursesTaken().size();i++){
 			//courses become invalid after 6 years
-			if (year - Integer.parseInt(record.getCoursesTaken().get(i).getTerm().getYear()) <= 6){
-				String semester = record.getTermBegan().getSemester();
+			if (year - Integer.parseInt(transcript.getCoursesTaken().get(i).getTerm().getYear()) <= 6){
+				String semester = transcript.getTermBegan().getSemester();
 				//acurate time based on semester
 				if((semester.equalsIgnoreCase("SPRING") && month <= 4)
 					|| (semester.equalsIgnoreCase("SUMMER") && month <= 7) 
 					|| (semester.equalsIgnoreCase("FALL") && month <= 12)){
-					if(coreCourseSet.contains(record.getCoursesTaken().get(i).getCourse().getId())){
-						coreCoursesTaken.add(record.getCoursesTaken().get(i));
+					if(coreCourseSet.contains(transcript.getCoursesTaken().get(i).getCourse().getId())){
+						coreCoursesTaken.add(transcript.getCoursesTaken().get(i));
 					}else{
-						otherCoursesTaken.add(record.getCoursesTaken().get(i));
-						if(record.getCoursesTaken().get(i).getCourse().getId().equalsIgnoreCase("csce799")){
-							course799.add(record.getCoursesTaken().get(i));
-							credits799 += Integer.parseInt(record.getCoursesTaken().get(i).getCourse().getNumCredits());
+						otherCoursesTaken.add(transcript.getCoursesTaken().get(i));
+						if(transcript.getCoursesTaken().get(i).getCourse().getId().equalsIgnoreCase("csce799")){
+							course799.add(transcript.getCoursesTaken().get(i));
+							credits799 += Integer.parseInt(transcript.getCoursesTaken().get(i).getCourse().getNumCredits());
 						}
 					}
 				}
@@ -433,23 +465,23 @@ public class ProgressSummaryGenerator {
 		List<CourseTaken> validDegreeCoursesTaken = new ArrayList<CourseTaken>();
 		
 		int credits = 0; int non_csce_credits = 0; int csce798_credits = 0;
-		for (int i=0; i<record.getCoursesTaken().size();i++){
-			if(!nonDegreeCourses.contains(record.getCoursesTaken().get(i).getCourse().getId())){
-				validDegreeCoursesTaken.add(record.getCoursesTaken().get(i));
-				if(!record.getCoursesTaken().get(i).getCourse().getId().replaceAll("[0-9]", "").equalsIgnoreCase("csce")){
-					non_csce_credits += Integer.parseInt(record.getCoursesTaken().get(i).getCourse().getNumCredits());
+		for (int i=0; i<transcript.getCoursesTaken().size();i++){
+			if(!nonDegreeCourses.contains(transcript.getCoursesTaken().get(i).getCourse().getId())){
+				validDegreeCoursesTaken.add(transcript.getCoursesTaken().get(i));
+				if(!transcript.getCoursesTaken().get(i).getCourse().getId().replaceAll("[0-9]", "").equalsIgnoreCase("csce")){
+					non_csce_credits += Integer.parseInt(transcript.getCoursesTaken().get(i).getCourse().getNumCredits());
 					if (non_csce_credits > 6){
 						non_csce_credits = 6;
 					}
 				}
-				else if(record.getCoursesTaken().get(i).getCourse().getId().equalsIgnoreCase("csce798")){
-					csce798_credits += Integer.parseInt(record.getCoursesTaken().get(i).getCourse().getNumCredits());
+				else if(transcript.getCoursesTaken().get(i).getCourse().getId().equalsIgnoreCase("csce798")){
+					csce798_credits += Integer.parseInt(transcript.getCoursesTaken().get(i).getCourse().getNumCredits());
 					if(csce798_credits > 3){
 						csce798_credits = 3;
 					}
 					
 				}else{
-					credits += Integer.parseInt(record.getCoursesTaken().get(i).getCourse().getNumCredits());
+					credits += Integer.parseInt(transcript.getCoursesTaken().get(i).getCourse().getNumCredits());
 				}
 			}
 		}
@@ -470,22 +502,26 @@ public class ProgressSummaryGenerator {
 		requirementCheckResults.add(thesisCredits);
 		
 		//time limit
-		RequirementCheck timeRequirement = getTimeLimitRequirement(6, record, "TIME_LIMIT_MS");
+		RequirementCheck timeRequirement = getTimeLimitRequirement(6, transcript, "TIME_LIMIT_MS");
 		requirementCheckResults.add(timeRequirement);
 		
 		//gpa requirement
-		RequirementCheck gpaRequirement = getGpaRequirement(record, "GPA");
+		RequirementCheck gpaRequirement = getGpaRequirement(transcript, "GPA");
 		requirementCheckResults.add(gpaRequirement);
 		
 		//milestone requirement
-		RequirementCheck milestoneRequirement = getMilestoneRequirement(milestones, record, "MILESTONES_MS");
+		RequirementCheck milestoneRequirement = getMilestoneRequirement(milestones, transcript, "MILESTONES_MS");
 		requirementCheckResults.add(milestoneRequirement);
 		
 		return requirementCheckResults;
 	}
 	
-	//MENG requirement
-	private static List<RequirementCheck> checkMENG(StudentRecord record){
+	/**
+	 * MENG requirement
+	 * @param transcript The student's current transcript
+	 * @return requirementCheckResults The requirementCheckResults for MENG
+	 */
+	private static List<RequirementCheck> checkMENG(StudentRecord transcript){
 		//current year
 		int year = Calendar.getInstance().get(Calendar.YEAR);
 		//hard code the core courses
@@ -515,19 +551,19 @@ public class ProgressSummaryGenerator {
 		RequirementCheck coreCourses = new RequirementCheck("CORE_COURSES_MENG");
 		List<CourseTaken> coreCoursesTaken = new ArrayList<CourseTaken>();
 		List<CourseTaken> otherCoursesTaken = new ArrayList<CourseTaken>();
-		for(int i=0; i<record.getCoursesTaken().size();i++){
+		for(int i=0; i<transcript.getCoursesTaken().size();i++){
 			//courses become invalid after 6 years
-			if (year - Integer.parseInt(record.getCoursesTaken().get(i).getTerm().getYear()) <= 6){
-				String semester = record.getTermBegan().getSemester();
+			if (year - Integer.parseInt(transcript.getCoursesTaken().get(i).getTerm().getYear()) <= 6){
+				String semester = transcript.getTermBegan().getSemester();
 				//acurate time based on semester
 				if((semester.equalsIgnoreCase("SPRING") && month <= 4)
 					|| (semester.equalsIgnoreCase("SUMMER") && month <= 7) 
 					|| (semester.equalsIgnoreCase("FALL") && month <= 12)){
 					
-					if(coreCourseSet.contains(record.getCoursesTaken().get(i).getCourse().getId())){
-						coreCoursesTaken.add(record.getCoursesTaken().get(i));
+					if(coreCourseSet.contains(transcript.getCoursesTaken().get(i).getCourse().getId())){
+						coreCoursesTaken.add(transcript.getCoursesTaken().get(i));
 					}else{
-						otherCoursesTaken.add(record.getCoursesTaken().get(i));
+						otherCoursesTaken.add(transcript.getCoursesTaken().get(i));
 					}
 				}
 			}
@@ -556,23 +592,23 @@ public class ProgressSummaryGenerator {
 		List<CourseTaken> validDegreeCoursesTaken = new ArrayList<CourseTaken>();
 		
 		int credits = 0; int non_csce_credits = 0; int csce798_credits = 0;
-		for (int i=0; i<record.getCoursesTaken().size();i++){
-			if(!nonDegreeCourses.contains(record.getCoursesTaken().get(i).getCourse().getId())){
-				validDegreeCoursesTaken.add(record.getCoursesTaken().get(i));
-				if(!record.getCoursesTaken().get(i).getCourse().getId().replaceAll("[0-9]", "").equalsIgnoreCase("csce")){
-					non_csce_credits += Integer.parseInt(record.getCoursesTaken().get(i).getCourse().getNumCredits());
+		for (int i=0; i<transcript.getCoursesTaken().size();i++){
+			if(!nonDegreeCourses.contains(transcript.getCoursesTaken().get(i).getCourse().getId())){
+				validDegreeCoursesTaken.add(transcript.getCoursesTaken().get(i));
+				if(!transcript.getCoursesTaken().get(i).getCourse().getId().replaceAll("[0-9]", "").equalsIgnoreCase("csce")){
+					non_csce_credits += Integer.parseInt(transcript.getCoursesTaken().get(i).getCourse().getNumCredits());
 					if (non_csce_credits > 6){
 						non_csce_credits = 6;
 					}
 				}
-				else if(record.getCoursesTaken().get(i).getCourse().getId().equalsIgnoreCase("csce798")){
-					csce798_credits = Integer.parseInt(record.getCoursesTaken().get(i).getCourse().getNumCredits());
+				else if(transcript.getCoursesTaken().get(i).getCourse().getId().equalsIgnoreCase("csce798")){
+					csce798_credits = Integer.parseInt(transcript.getCoursesTaken().get(i).getCourse().getNumCredits());
 					if(csce798_credits > 3){
 						csce798_credits = 3;
 					}
 					
 				}else{
-					credits += Integer.parseInt(record.getCoursesTaken().get(i).getCourse().getNumCredits());
+					credits += Integer.parseInt(transcript.getCoursesTaken().get(i).getCourse().getNumCredits());
 				}
 			}
 		}
@@ -585,22 +621,26 @@ public class ProgressSummaryGenerator {
 		requirementCheckResults.add(degreeBasedCredits);
 		
 		//time limit
-		RequirementCheck timeRequirement = getTimeLimitRequirement(6, record, "TIME_LIMIT_MENG");
+		RequirementCheck timeRequirement = getTimeLimitRequirement(6, transcript, "TIME_LIMIT_MENG");
 		requirementCheckResults.add(timeRequirement);
 		
 		//gpa requirement
-		RequirementCheck gpaRequirement = getGpaRequirement(record, "GPA");
+		RequirementCheck gpaRequirement = getGpaRequirement(transcript, "GPA");
 		requirementCheckResults.add(gpaRequirement);
 		
 		//milestone requirement
-		RequirementCheck milestoneRequirement = getMilestoneRequirement(milestones, record, "MILESTONES_MENG");
+		RequirementCheck milestoneRequirement = getMilestoneRequirement(milestones, transcript, "MILESTONES_MENG");
 		requirementCheckResults.add(milestoneRequirement);
 		
 		return requirementCheckResults;
 	}
 	
-	//MSE requirement
-	private static List<RequirementCheck> checkMSE(StudentRecord record){
+	/**
+	 * MSE requirement
+	 * @param transcript The student's current transcript
+	 * @return requirementCheckResults The requirementCheckResults for MSE
+	 */
+	private static List<RequirementCheck> checkMSE(StudentRecord transcript){
 		//current year
 		int year = Calendar.getInstance().get(Calendar.YEAR);
 		//hard code the core courses
@@ -626,27 +666,27 @@ public class ProgressSummaryGenerator {
 		
 		List<RequirementCheck> requirementCheckResults = new ArrayList<RequirementCheck>();
 		
-		//coreCourses requirement, record 793
+		//coreCourses requirement, transcript 793
 		List<CourseTaken> course793 = new ArrayList<CourseTaken>();
 		
 		RequirementCheck coreCourses = new RequirementCheck("CORE_COURSES_MSE");
 		List<CourseTaken> coreCoursesTaken = new ArrayList<CourseTaken>();
 		List<CourseTaken> otherCoursesTaken = new ArrayList<CourseTaken>();
-		for(int i=0; i<record.getCoursesTaken().size();i++){
+		for(int i=0; i<transcript.getCoursesTaken().size();i++){
 			//courses become invalid after 6 years
-			if (year - Integer.parseInt(record.getCoursesTaken().get(i).getTerm().getYear()) <= 6){
-				String semester = record.getTermBegan().getSemester();
+			if (year - Integer.parseInt(transcript.getCoursesTaken().get(i).getTerm().getYear()) <= 6){
+				String semester = transcript.getTermBegan().getSemester();
 				//acurate time based on semester
 				if((semester.equalsIgnoreCase("SPRING") && month <= 4)
 					|| (semester.equalsIgnoreCase("SUMMER") && month <= 7) 
 					|| (semester.equalsIgnoreCase("FALL") && month <= 12)){
 					
-					if(coreCourseSet.contains(record.getCoursesTaken().get(i).getCourse().getId())){
-						coreCoursesTaken.add(record.getCoursesTaken().get(i));
+					if(coreCourseSet.contains(transcript.getCoursesTaken().get(i).getCourse().getId())){
+						coreCoursesTaken.add(transcript.getCoursesTaken().get(i));
 					}else{
-						otherCoursesTaken.add(record.getCoursesTaken().get(i));
-						if(record.getCoursesTaken().get(i).getCourse().getId().equalsIgnoreCase("csce793")){
-							course793.add(record.getCoursesTaken().get(i));
+						otherCoursesTaken.add(transcript.getCoursesTaken().get(i));
+						if(transcript.getCoursesTaken().get(i).getCourse().getId().equalsIgnoreCase("csce793")){
+							course793.add(transcript.getCoursesTaken().get(i));
 						}
 					}
 				}
@@ -713,22 +753,26 @@ public class ProgressSummaryGenerator {
 		requirementCheckResults.add(expRequirement);
 		
 		//time limit
-		RequirementCheck timeRequirement = getTimeLimitRequirement(6, record, "TIME_LIMIT_MSE");
+		RequirementCheck timeRequirement = getTimeLimitRequirement(6, transcript, "TIME_LIMIT_MSE");
 		requirementCheckResults.add(timeRequirement);
 		
 		//gpa requirement
-		RequirementCheck gpaRequirement = getGpaRequirement(record, "GPA");
+		RequirementCheck gpaRequirement = getGpaRequirement(transcript, "GPA");
 		requirementCheckResults.add(gpaRequirement);
 		
 		//milestone requirement
-		RequirementCheck milestoneRequirement = getMilestoneRequirement(milestones, record, "MILESTONES_MSE");
+		RequirementCheck milestoneRequirement = getMilestoneRequirement(milestones, transcript, "MILESTONES_MSE");
 		requirementCheckResults.add(milestoneRequirement);
 		
 		return requirementCheckResults;
 	}
 	
-	//INFAS requirement
-	private static List<RequirementCheck> checkINFAS(StudentRecord record){
+	/**
+	 * INFAS requirement
+	 * @param transcript The student's current transcript
+	 * @return requirementCheckResults The requirementCheckResults for INFAS
+	 */
+	private static List<RequirementCheck> checkINFAS(StudentRecord transcript){
 		//current year
 		int year = Calendar.getInstance().get(Calendar.YEAR);
 		//hard code the core courses
@@ -746,18 +790,18 @@ public class ProgressSummaryGenerator {
 		RequirementCheck coreCourses = new RequirementCheck("CORE_COURSES_INFAS");
 		List<CourseTaken> coreCoursesTaken = new ArrayList<CourseTaken>();
 		List<CourseTaken> otherCoursesTaken = new ArrayList<CourseTaken>();
-		for(int i=0; i<record.getCoursesTaken().size();i++){
+		for(int i=0; i<transcript.getCoursesTaken().size();i++){
 			//courses become invalid after 6 years
-			if (year - Integer.parseInt(record.getCoursesTaken().get(i).getTerm().getYear()) <= 6){
-				String semester = record.getTermBegan().getSemester();
+			if (year - Integer.parseInt(transcript.getCoursesTaken().get(i).getTerm().getYear()) <= 6){
+				String semester = transcript.getTermBegan().getSemester();
 				//acurate time based on semester
 				if((semester.equalsIgnoreCase("SPRING") && month <= 4)
 					|| (semester.equalsIgnoreCase("SUMMER") && month <= 7) 
 					|| (semester.equalsIgnoreCase("FALL") && month <= 12)){
-					if(coreCourseSet.contains(record.getCoursesTaken().get(i).getCourse().getId())){
-						coreCoursesTaken.add(record.getCoursesTaken().get(i));
+					if(coreCourseSet.contains(transcript.getCoursesTaken().get(i).getCourse().getId())){
+						coreCoursesTaken.add(transcript.getCoursesTaken().get(i));
 					}else{
-						otherCoursesTaken.add(record.getCoursesTaken().get(i));
+						otherCoursesTaken.add(transcript.getCoursesTaken().get(i));
 					}
 				}
 			}
@@ -774,8 +818,8 @@ public class ProgressSummaryGenerator {
 		int credits500 = 0;int credits700 = 0; int non_csce_credits = 0;
 		for (int i=0; i<otherCoursesTaken.size();i++){
 			if(!nonAdditionalCourses.contains(otherCoursesTaken.get(i).getCourse().getId())){
-				if(!record.getCoursesTaken().get(i).getCourse().getId().replaceAll("[0-9]", "").equalsIgnoreCase("csce")){
-					non_csce_credits += Integer.parseInt(record.getCoursesTaken().get(i).getCourse().getNumCredits());
+				if(!transcript.getCoursesTaken().get(i).getCourse().getId().replaceAll("[0-9]", "").equalsIgnoreCase("csce")){
+					non_csce_credits += Integer.parseInt(transcript.getCoursesTaken().get(i).getCourse().getNumCredits());
 					if (non_csce_credits > 6){
 						non_csce_credits = 6;
 					}
@@ -796,7 +840,7 @@ public class ProgressSummaryGenerator {
 		master.add("MS"); master.add("MENG"); master.add("MSE");
 				
 		//for student who also enrolled in master's degree. 9 credits should be subtracted
-		if(master.contains(record.getDegreeSought().getName())){
+		if(master.contains(transcript.getDegreeSought().getName())){
 			if(credits700 >= 9 && credits500+non_csce_credits >= 27){
 				additionalCredits.setPassed(true);
 			}
@@ -809,11 +853,11 @@ public class ProgressSummaryGenerator {
 		
 		
 		//time limit
-		RequirementCheck timeRequirement = getTimeLimitRequirement(6, record, "TIME_LIMIT_INFAS");
+		RequirementCheck timeRequirement = getTimeLimitRequirement(6, transcript, "TIME_LIMIT_INFAS");
 		requirementCheckResults.add(timeRequirement);
 		
 		//gpa requirement
-		RequirementCheck gpaRequirement = getGpaRequirement(record, "GPA");
+		RequirementCheck gpaRequirement = getGpaRequirement(transcript, "GPA");
 		requirementCheckResults.add(gpaRequirement);
 		
 		return requirementCheckResults;

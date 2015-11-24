@@ -1,5 +1,10 @@
 package edu.sc.csce740.module;
 
+/**
+ * 
+ * Session module
+ *
+ */
 public class Session {
 	private static String userId;
 	

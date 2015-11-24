@@ -4,6 +4,11 @@ public class Degree {
 	private String name;
 	private Term graduation;
 	
+	/**
+	 * 
+	 * @param name
+	 * @param graduation
+	 */
 	public Degree(String name, Term graduation){
 		this.setName(name);
 		this.setGraduation(graduation);

@@ -13,6 +13,17 @@ public class ProgressSummary {
 	private List<Professor> committee;
 	private List<RequirementCheck> requirementCheckResults;
 	
+	/**
+	 * 
+	 * @param student
+	 * @param department
+	 * @param termBegan
+	 * @param degreeSought
+	 * @param certificateSought
+	 * @param advisors
+	 * @param committee
+	 * @param requirementCheckResults
+	 */
 	public ProgressSummary(Student student, String department, 
 			Term termBegan, Degree degreeSought, Degree certificateSought,
 			List<Professor> advisors, List<Professor> committee,

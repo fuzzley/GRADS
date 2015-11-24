@@ -30,7 +30,12 @@ public class Student {
 		this.lastName = lastName;
 	}
 	
-	// constructor
+	/**
+	 * 
+	 * @param id
+	 * @param firstName
+	 * @param lastName
+	 */
 	public Student(String id, String firstName, String lastName){
 		this.setId(id);
 		this.setFirstName(firstName);

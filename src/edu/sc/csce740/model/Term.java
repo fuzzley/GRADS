@@ -4,6 +4,11 @@ public class Term {
 	private String semester;
 	private String year;
 	
+	/**
+	 * 
+	 * @param semester
+	 * @param year
+	 */
 	public Term(String semester, String year){
 		this.setSemester(semester);
 		this.setYear(year);

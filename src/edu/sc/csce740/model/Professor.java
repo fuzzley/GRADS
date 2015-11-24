@@ -5,6 +5,12 @@ public class Professor {
 	private String firstName;
 	private String lastName;
 	
+	/**
+	 * 
+	 * @param department
+	 * @param firstName
+	 * @param lastName
+	 */
 	public Professor(String department, String firstName, String lastName){
 		this.setDepartment(department);
 		this.setFirstName(firstName);

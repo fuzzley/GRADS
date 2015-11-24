@@ -15,6 +15,20 @@ public class StudentRecord {
 	private List<Milestone> milestonesSet;
 	private List<String> notes;
 	
+	/**
+	 * 
+	 * @param student
+	 * @param department
+	 * @param termBegan
+	 * @param degreeSought
+	 * @param certificateSought
+	 * @param previousDegrees
+	 * @param advisors
+	 * @param committee
+	 * @param coursesTaken
+	 * @param milestonesSet
+	 * @param notes
+	 */
 	public StudentRecord(Student student, String department, Term termBegan, Degree degreeSought,
 			Degree certificateSought, List<Degree>previousDegrees, List<Professor>advisors,
 			List<Professor>committee, List<CourseTaken>coursesTaken, List<Milestone>milestonesSet, List<String> notes){

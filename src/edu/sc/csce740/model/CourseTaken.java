@@ -5,6 +5,12 @@ public class CourseTaken {
 	private Term term;
 	private String grade;
 	
+	/**
+	 * 
+	 * @param course
+	 * @param term
+	 * @param grade
+	 */
 	public CourseTaken(Course course, Term term, String grade){
 		this.setCourse(course);
 		this.setTerm(term);

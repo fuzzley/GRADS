@@ -5,6 +5,12 @@ public class Course {
 	private String id;
 	private String numCredits;
 	
+	/**
+	 * 
+	 * @param name
+	 * @param id
+	 * @param numCredits
+	 */
 	public Course(String name, String id, String numCredits){
 		this.setName(name);
 		this.setId(id);
