@@ -1,17 +1,17 @@
 [
   {
     "student": {
-      "id": "meng1",
+      "id": "phd1",
       "firstName": "Michelle",
       "lastName": "Hunt"
     },
     "department": "COMPUTER_SCIENCE",
     "termBegan": {
       "semester": "FALL",
-      "year": 2013
+      "year": 2007
     },
     "degreeSought": {
-      "name": "MENG",
+      "name": "PHD",
       "graduation": {
         "semester": "SPRING",
         "year": 2018
@@ -135,63 +135,111 @@
         },
         "grade": "A"
       },
-      {
+   {
         "course": {
-          "name": "csce741",
-          "id": "csce741",
-          "numCredits": "3"
-        },
-        "term": {
-          "semester": "FALL",
-          "year": 2015
-        },
-        "grade": "_"
-      },
-      {
-        "course": {
-          "name": "csce742",
-          "id": "csce742",
-          "numCredits": "3"
-        },
-        "term": {
-          "semester": "FALL",
-          "year": 2015
-        },
-        "grade": "_"
-      },
-      {
-        "course": {
-          "name": "csce743",
-          "id": "csce743",
-          "numCredits": "3"
-        },
-        "term": {
-          "semester": "FALL",
-          "year": 2016
-        },
-        "grade": "_"
-      },
-       {
-        "course": {
-          "name": "csce744",
-          "id": "csce743",
-          "numCredits": "3"
-        },
-        "term": {
-          "semester": "FALL",
-          "year": 2016
-        },
-        "grade": "_"
-      },
-        {
-        "course": {
-          "name": "csce797",
-          "id": "csce797",
+          "name": "Dissertation Preparation",
+          "id": "csce899",
           "numCredits": "6"
         },
         "term": {
           "semester": "FALL",
+          "year": 2014
+        },
+        "grade": "P"
+      },
+   {
+        "course": {
+          "name": "Dissertation Preparation",
+          "id": "csce899",
+          "numCredits": "6"
+        },
+        "term": {
+          "semester": "SPRING",
+          "year": 2015
+        },
+        "grade": "P"
+      },
+      {
+        "course": {
+          "name": "Software Engineering",
+          "id": "csce7401",
+          "numCredits": "3"
+        },
+        "term": {
+          "semester": "FALL",
+          "year": 2015
+        },
+        "grade": "_"
+      },
+      {
+        "course": {
+          "name": "Software Engineering",
+          "id": "csce7402",
+          "numCredits": "3"
+        },
+        "term": {
+          "semester": "FALL",
           "year": 2016
+        },
+        "grade": "_"
+      },
+      {
+        "course": {
+          "name": "Software Engineering",
+          "id": "csce7403",
+          "numCredits": "3"
+        },
+        "term": {
+          "semester": "FALL",
+          "year": 2015
+        },
+        "grade": "_"
+      },
+      {
+        "course": {
+          "name": "Software Engineering",
+          "id": "csce7404",
+          "numCredits": "3"
+        },
+        "term": {
+          "semester": "FALL",
+          "year": 2015
+        },
+        "grade": "_"
+      },
+      {
+        "course": {
+          "name": "Software Engineering",
+          "id": "csce7405",
+          "numCredits": "3"
+        },
+        "term": {
+          "semester": "FALL",
+          "year": 2015
+        },
+        "grade": "_"
+      },
+      {
+        "course": {
+          "name": "Software Engineering",
+          "id": "csce7406",
+          "numCredits": "3"
+        },
+        "term": {
+          "semester": "FALL",
+          "year": 2015
+        },
+        "grade": "_"
+      },
+      {
+        "course": {
+          "name": "Software Engineering",
+          "id": "csce7407",
+          "numCredits": "3"
+        },
+        "term": {
+          "semester": "FALL",
+          "year": 2015
         },
         "grade": "_"
       }

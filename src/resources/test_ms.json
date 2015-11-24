@@ -23,7 +23,7 @@
         "graduation": {
           "semester": "SPRING",
           "year": 2008
-       	}
+        }
        }
     ],
     "advisors": [
@@ -111,11 +111,34 @@
         },
         "grade": "A"
       },
-   
+    {
+        "course": {
+          "name": "Seminar in Advances in Computing",
+          "id": "csce791",
+          "numCredits": "1"
+        },
+        "term": {
+          "semester": "SPRING",
+          "year": 2015
+        },
+        "grade": "A"
+      },
       {
         "course": {
           "name": "Software Engineering",
           "id": "csce740",
+          "numCredits": "3"
+        },
+        "term": {
+          "semester": "FALL",
+          "year": 2015
+        },
+        "grade": "_"
+      },
+      {
+        "course": {
+          "name": "csce741",
+          "id": "csce741",
           "numCredits": "3"
         },
         "term": {
@@ -177,4 +200,5 @@
       "note3"
     ]
   }
+]
 ]
