@@ -25,26 +25,19 @@ public class Driver {
 		}
 
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
-//		ProgressSummary ps;
-//		try {
-//			ps = ProgressSummaryGenerator.generateProgressSummary("mhunt");
-//			System.out.println(gson.toJson(ps));
-//		} catch (StudentRecordNotFoundException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		
-//		
-//		System.out.println("done");
-		
+		ProgressSummary ps;
 		try {
-			String studentId = "mhunt";
-//			StudentRecord record = grads.getTranscript(studentId);
-//			grads.addNote(studentId, "Excellent student.", true);
-			System.out.println(gson.toJson(grads.getTranscript(studentId)));
-		} catch (Exception ex) {
-			ex.printStackTrace();
+			ps = ProgressSummaryGenerator.generateProgressSummary("mhunt");
+			System.out.println(gson.toJson(ps));
+		} catch (StudentRecordNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		
+		
+		System.out.println("done");
+		
+
 	}
 
 }
