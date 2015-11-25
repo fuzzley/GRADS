@@ -1,20 +1,20 @@
 [
   {
     "student": {
-      "id": "",
+      "id": "phd1",
       "firstName": "Michelle",
       "lastName": "Hunt"
     },
     "department": "COMPUTER_SCIENCE",
     "termBegan": {
       "semester": "FALL",
-      "year": 2013
+      "year": 2007
     },
     "degreeSought": {
-      "name": "MS",
+      "name": "PHD",
       "graduation": {
         "semester": "SPRING",
-        "year": 2016
+        "year": 2018
       }
     },
     "previousDegrees": [
@@ -23,7 +23,7 @@
         "graduation": {
           "semester": "SPRING",
           "year": 2008
-       	}
+        }
        }
     ],
     "advisors": [
@@ -55,10 +55,10 @@
         "course": {
           "name": "Naptime",
           "id": "nap734",
-          "numCredits": "3"
+          "numCredits": "5"
         },
         "term": {
-          "semester": "FALL",
+          "semester": "SPRING",
           "year": 2014
         },
         "grade": "B"
@@ -67,7 +67,7 @@
         "course": {
           "name": "Advanced Naptime",
           "id": "nap888",
-          "numCredits": "3"
+          "numCredits": "5"
         },
         "term": {
           "semester": "FALL",
@@ -101,6 +101,18 @@
       },
       {
         "course": {
+             "name": "Theory of Computation",
+             "id": "csce551",
+             "numCredits": "3"
+        },
+        "term": {
+          "semester": "FALL",
+          "year": 2014
+        },
+        "grade": "A"
+      },
+      {
+        "course": {
              "name": "Analysis of Algorithms",
              "id": "csce750",
              "numCredits": "3"
@@ -111,7 +123,7 @@
         },
         "grade": "A"
       },
-   	{
+      {
         "course": {
           "name": "Seminar in Advances in Computing",
           "id": "csce791",
@@ -123,17 +135,29 @@
         },
         "grade": "A"
       },
-      {
+   {
         "course": {
-          "name": "Software Engineering",
-          "id": "csce740",
-          "numCredits": "3"
+          "name": "Dissertation Preparation",
+          "id": "csce899",
+          "numCredits": "6"
         },
         "term": {
           "semester": "FALL",
+          "year": 2014
+        },
+        "grade": "P"
+      },
+   {
+        "course": {
+          "name": "Dissertation Preparation",
+          "id": "csce899",
+          "numCredits": "6"
+        },
+        "term": {
+          "semester": "SPRING",
           "year": 2015
         },
-        "grade": "_"
+        "grade": "P"
       },
       {
         "course": {
@@ -149,9 +173,129 @@
       },
       {
         "course": {
-          "name": "Software Engineering",
-          "id": "csce798",
-          "numCredits": "6"
+          "name": "csce742",
+          "id": "csce742",
+          "numCredits": "3"
+        },
+        "term": {
+          "semester": "FALL",
+          "year": 2015
+        },
+        "grade": "_"
+      },
+      {
+        "course": {
+          "name": "csce743",
+          "id": "csce743",
+          "numCredits": "3"
+        },
+        "term": {
+          "semester": "FALL",
+          "year": 2016
+        },
+        "grade": "_"
+      },
+      {
+        "course": {
+          "name": "csce744",
+          "id": "csce744",
+          "numCredits": "3"
+        },
+        "term": {
+          "semester": "FALL",
+          "year": 2015
+        },
+        "grade": "_"
+      },
+      {
+        "course": {
+          "name": "csce745",
+          "id": "csce745",
+          "numCredits": "3"
+        },
+        "term": {
+          "semester": "FALL",
+          "year": 2015
+        },
+        "grade": "_"
+      },
+      {
+        "course": {
+          "name": "csce746",
+          "id": "csce746",
+          "numCredits": "3"
+        },
+        "term": {
+          "semester": "FALL",
+          "year": 2015
+        },
+        "grade": "_"
+      },
+      {
+        "course": {
+          "name": "csce747",
+          "id": "csce747",
+          "numCredits": "3"
+        },
+        "term": {
+          "semester": "FALL",
+          "year": 2015
+        },
+        "grade": "_"
+      },
+      {
+        "course": {
+          "name": "csce748",
+          "id": "csce748",
+          "numCredits": "3"
+        },
+        "term": {
+          "semester": "FALL",
+          "year": 2015
+        },
+        "grade": "_"
+      },
+      {
+        "course": {
+          "name": "csce541",
+          "id": "csce541",
+          "numCredits": "3"
+        },
+        "term": {
+          "semester": "FALL",
+          "year": 2015
+        },
+        "grade": "_"
+      },
+      {
+        "course": {
+          "name": "csce542",
+          "id": "csce542",
+          "numCredits": "3"
+        },
+        "term": {
+          "semester": "FALL",
+          "year": 2015
+        },
+        "grade": "_"
+      },
+      {
+        "course": {
+          "name": "csce543",
+          "id": "csce543",
+          "numCredits": "3"
+        },
+        "term": {
+          "semester": "FALL",
+          "year": 2015
+        },
+        "grade": "_"
+      },
+      {
+        "course": {
+          "name": "csce544",
+          "id": "csce544",
+          "numCredits": "3"
         },
         "term": {
           "semester": "FALL",
@@ -201,4 +345,3 @@
     ]
   }
 ]
->>>>>>> 1baec2c9657d0383fd8054006c57c451e98d4fd4

@@ -14,6 +14,11 @@ import com.google.gson.Gson;
 import edu.sc.csce740.exception.*;
 import edu.sc.csce740.model.*;
 
+/**
+ * 
+ * Data Store module
+ *
+ */
 public class DataStore {
 	public static List<StudentRecord> studentRecords;
 	private static List<StudentRecord> studentRecordsOriginal;
@@ -139,6 +144,12 @@ public class DataStore {
 		}
 	}
 
+	/**
+	 * Saves the given student records to the provided file name.
+	 * @param fileName File name of the file to save to.
+	 * @param studentRecords The list of student records to save.
+	 * @throws StudentRecordsNotSavedException
+	 */
 	private static void saveStudentRecords(String fileName, List<StudentRecord> studentRecords) throws StudentRecordsNotSavedException {
 		Gson gson = new Gson();
 		String json = gson.toJson(studentRecords);
@@ -156,6 +167,12 @@ public class DataStore {
 		}
 	}
 
+	/**
+	 * Saves the given courses to the provided file name.
+	 * @param fileName File name of the file to save to.
+	 * @param courses The list of courses to save.
+	 * @throws CoursesNotSavedException
+	 */
 	private static void saveCourses(String fileName, List<Course> courses) throws CoursesNotSavedException {
 		Gson gson = new Gson();
 		String json = gson.toJson(courses);
@@ -173,6 +190,12 @@ public class DataStore {
 		}
 	}
 
+	/**
+	 * Saves the given users to the provided file name.
+	 * @param fileName File name of the file to save to.
+	 * @param users The list of users to save.
+	 * @throws UsersNotSavedException
+	 */
 	private static void saveUsers(String fileName, List<User> users) throws UsersNotSavedException {
 		Gson gson = new Gson();
 		String json = gson.toJson(users);

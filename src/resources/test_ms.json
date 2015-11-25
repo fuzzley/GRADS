@@ -1,7 +1,7 @@
 [
   {
     "student": {
-      "id": "",
+      "id": "ms1",
       "firstName": "Michelle",
       "lastName": "Hunt"
     },
@@ -23,7 +23,7 @@
         "graduation": {
           "semester": "SPRING",
           "year": 2008
-       	}
+        }
        }
     ],
     "advisors": [
@@ -111,7 +111,7 @@
         },
         "grade": "A"
       },
-   	{
+    {
         "course": {
           "name": "Seminar in Advances in Computing",
           "id": "csce791",
@@ -201,4 +201,4 @@
     ]
   }
 ]
->>>>>>> 1baec2c9657d0383fd8054006c57c451e98d4fd4
+]
