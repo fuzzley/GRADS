@@ -46,6 +46,9 @@ public class ProgressSummaryGenerator {
 		else if(transcript.getDegreeSought().getName().equalsIgnoreCase("MSE")){
 			requirementCheckResults = checkMSE(transcript);
 		}
+		else if(transcript.getDegreeSought().getName().equalsIgnoreCase("INFAS")){
+			requirementCheckResults = checkINFAS(transcript);
+		}
 		if (transcript.getCertificateSought() != null){
 			if (transcript.getCertificateSought().getName().equalsIgnoreCase("INFAS")){
 				List<RequirementCheck> requirementINFAS = checkINFAS(transcript);
@@ -89,7 +92,9 @@ public class ProgressSummaryGenerator {
 		else if(transcript.getDegreeSought().getName().equalsIgnoreCase("MSE")){
 			requirementCheckResults = checkMSE(transcript);
 		}
-		
+		else if(transcript.getDegreeSought().getName().equalsIgnoreCase("INFAS")){
+			requirementCheckResults = checkINFAS(transcript);
+		}
 		if (transcript.getCertificateSought() != null){
 			if (transcript.getCertificateSought().getName().equalsIgnoreCase("INFAS")){
 				List<RequirementCheck> requirementINFAS = checkINFAS(transcript);
