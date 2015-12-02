@@ -5,7 +5,6 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import edu.sc.csce740.GRADS;
-import edu.sc.csce740.exception.CoursesNotLoadedException;
 
 public class GRADSTest {
 
