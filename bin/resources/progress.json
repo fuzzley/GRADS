@@ -113,7 +113,7 @@
             "name":"ADDITIONAL_CREDITS_PHD",
             "passed":false,
             "details":{
-               notes: [
+               "notes": [
                  "Must pass 20 more hours of CSCE courses numbered above 700 that are not core courses."
               ]
             }
@@ -208,7 +208,7 @@
                   "grade": "A"
                 }
                ],
-               notes: [
+               "notes": [
                  "Must pass 25 more hours of graduate courses.",
                  "Must pass 11 more hours of CSCE courses numbered above 700."
               ]
@@ -231,7 +231,7 @@
                      },
                      "grade": "P"
                    },
-                {
+                	{
                      "course": {
                        "name": "Dissertation Preparation",
                        "id": "csce899",
@@ -242,7 +242,7 @@
                        "year": 2015
                      },
                      "grade": "P"
-                   },
+                   }
                ]
             }
          },
