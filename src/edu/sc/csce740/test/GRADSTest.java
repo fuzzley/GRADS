@@ -18,6 +18,40 @@ public class GRADSTest {
 	private GRADS grads;
 	private String csUser = "ggay";
 	
+	private static String coursesPath = "src/resources/courses.json";
+	private static String studentRecordsPath = "src/resources/students.json";
+	private static String usersPath = "src/resources/users.json";
+	
+	@Test
+	public void testSetUserValid() {
+		GRADS grads = new GRADS();
+
+		try {
+			grads.loadCourses(coursesPath);
+			grads.loadRecords(studentRecordsPath);
+			grads.loadUsers(usersPath);
+			
+			grads.setUser("ggay");
+		} catch (Exception ex) { }
+		
+		assert(grads.getUser() == "ggay");
+	}
+
+	@Test
+	public void testSetUserInvalid() {
+		GRADS grads = new GRADS();
+		
+		try {
+			grads.loadCourses(coursesPath);
+			grads.loadRecords(studentRecordsPath);
+			grads.loadUsers(usersPath);
+			
+			grads.setUser("gggay");
+		} catch (Exception ex) { }
+		
+		assert(grads.getUser() == null);
+	}
+	
 	@Before
 	public void setUp() throws UserNotFoundException{
 		this.grads = new GRADS();
@@ -86,6 +120,7 @@ public class GRADSTest {
 	public void tearDown() throws NoUserSetInSessionException{
 		this.grads.clearSession();
 		this.grads = null;
+
 	}
 
 }
