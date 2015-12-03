@@ -190,17 +190,25 @@ public class ProgressSummaryGenerator {
 	 */
 	private static RequirementCheck getTimeLimitRequirement(int limit, StudentRecord transcript, String name){
 		RequirementCheck timeRequirement = new RequirementCheck(name);
-		if(year - Integer.parseInt(transcript.getTermBegan().getYear()) <= limit){
-			String semester = transcript.getTermBegan().getSemester();
-			//comparing semester according to current month
-			if((semester.equalsIgnoreCase("SPRING") && month <= 4)
-				|| (semester.equalsIgnoreCase("SUMMER") && month <= 7) 
-				|| (semester.equalsIgnoreCase("FALL") && month <= 12)){
+		int temp = year - Integer.parseInt(transcript.getTermBegan().getYear());
+		String semester = transcript.getTermBegan().getSemester();
+		if (temp < limit){
+			timeRequirement.setPassed(true);
+		}else if(temp == limit){
+			if ((semester.equalsIgnoreCase("SPRING") && month <= 4)
+			|| (semester.equalsIgnoreCase("SUMMER") && month <= 7) 
+			|| (semester.equalsIgnoreCase("FALL") && month <= 12)){
 				timeRequirement.setPassed(true);
 			}
 		}
 		List<String> timeNotes = new ArrayList<String>();
-		timeNotes.add("A student must complete all degree requirements within a period of eight years after being admitted to the program as a regular student.");
+		String timelimit = "";
+		if (limit == 6){
+			timelimit = "six";
+		}else if(limit == 8){
+			timelimit = "eight";
+		}
+		timeNotes.add("A student must complete all degree requirements within a period of "+timelimit+" years after being admitted to the program as a regular student.");
 		timeRequirement.getDetails().setNotes(timeNotes);
 		return timeRequirement;
 	}
@@ -300,7 +308,7 @@ public class ProgressSummaryGenerator {
 			//courses become invalid after 6 years
 			int temp = year - Integer.parseInt(transcript.getCoursesTaken().get(i).getTerm().getYear());
 			if (temp <= 6){
-				String semester = transcript.getTermBegan().getSemester();
+				String semester = transcript.getCoursesTaken().get(i).getTerm().getSemester();
 				//acurate time based on semester
 
 				if(!(temp == 6 && ((semester.equalsIgnoreCase("SPRING") && month > 4)
@@ -436,7 +444,7 @@ public class ProgressSummaryGenerator {
 			//courses become invalid after 6 years
 			int temp = year - Integer.parseInt(transcript.getCoursesTaken().get(i).getTerm().getYear());
 			if (temp <= 6){
-				String semester = transcript.getTermBegan().getSemester();
+				String semester = transcript.getCoursesTaken().get(i).getTerm().getSemester();
 				//acurate time based on semester
 
 				if(!(temp == 6 && ((semester.equalsIgnoreCase("SPRING") && month > 4)
@@ -568,7 +576,7 @@ public class ProgressSummaryGenerator {
 			//courses become invalid after 6 years
 			int temp = year - Integer.parseInt(transcript.getCoursesTaken().get(i).getTerm().getYear());
 			if (temp <= 6){
-				String semester = transcript.getTermBegan().getSemester();
+				String semester = transcript.getCoursesTaken().get(i).getTerm().getSemester();
 				//acurate time based on semester
 
 				if(!(temp == 6 && ((semester.equalsIgnoreCase("SPRING") && month > 4)
@@ -691,7 +699,7 @@ public class ProgressSummaryGenerator {
 			//courses become invalid after 6 years
 			int temp = year - Integer.parseInt(transcript.getCoursesTaken().get(i).getTerm().getYear());
 			if (temp <= 6){
-				String semester = transcript.getTermBegan().getSemester();
+				String semester = transcript.getCoursesTaken().get(i).getTerm().getSemester();
 				//acurate time based on semester
 
 				if(!(temp == 6 && ((semester.equalsIgnoreCase("SPRING") && month > 4)
@@ -814,7 +822,7 @@ public class ProgressSummaryGenerator {
 			//courses become invalid after 6 years
 			int temp = year - Integer.parseInt(transcript.getCoursesTaken().get(i).getTerm().getYear());
 			if (temp <= 6){
-				String semester = transcript.getTermBegan().getSemester();
+				String semester = transcript.getCoursesTaken().get(i).getTerm().getSemester();
 				//acurate time based on semester
 
 				if(!(temp == 6 && ((semester.equalsIgnoreCase("SPRING") && month > 4)
