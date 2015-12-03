@@ -40,16 +40,8 @@ public class GRADSTest {
 	}
 	
 	@Test
-	public void testSetUserValid() {
-
-		try {
-			grads.loadCourses(coursesPath);
-			grads.loadRecords(studentRecordsPath);
-			grads.loadUsers(usersPath);
-			
-			grads.setUser("ggay");
-		} catch (Exception ex) { }
-		
+	public void testSetUserValid() throws UserNotFoundException {
+		grads.setUser("ggay");
 		assert(grads.getUser() == "ggay");
 	}
 
@@ -58,8 +50,6 @@ public class GRADSTest {
 		exception.expect(UserNotFoundException.class);
 		grads.setUser("gggay");
 	}
-	
-	
 	
 	@Test
 	public void testGenerateProgressSummary_passedPhD() throws Exception{
