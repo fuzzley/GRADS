@@ -72,6 +72,9 @@ public class ProgressSummaryGenerator {
 	 * @throws StudentRecordNotFoundException
 	 */
 	public static ProgressSummary simulateCourses(String studentId, List<CourseTaken> courses) throws StudentRecordNotFoundException{
+		
+		
+		
 		StudentRecord transcript = DataStore.getTranscript(studentId);
 		if (transcript == null) {
 			throw new StudentRecordNotFoundException();
@@ -255,6 +258,7 @@ public class ProgressSummaryGenerator {
 	 * @return requirementCheckResults The requirementCheckResults for PHD
 	 */
 	private static List<RequirementCheck> checkPhD(StudentRecord transcript){
+		
 		//hard code the core courses
 		HashSet<String> coreCourseSet = new HashSet<String>();
 		coreCourseSet.add("csce513"); coreCourseSet.add("csce531"); coreCourseSet.add("csce551"); coreCourseSet.add("csce750");coreCourseSet.add("csce791");
@@ -294,13 +298,14 @@ public class ProgressSummaryGenerator {
 		List<CourseTaken> otherCoursesTaken = new ArrayList<CourseTaken>();
 		for(int i=0; i<transcript.getCoursesTaken().size();i++){
 			//courses become invalid after 6 years
-			if (year - Integer.parseInt(transcript.getCoursesTaken().get(i).getTerm().getYear()) <= 6){
+			int temp = year - Integer.parseInt(transcript.getCoursesTaken().get(i).getTerm().getYear());
+			if (temp <= 6){
 				String semester = transcript.getTermBegan().getSemester();
 				//acurate time based on semester
-				if((semester.equalsIgnoreCase("SPRING") && month <= 4)
-					|| (semester.equalsIgnoreCase("SUMMER") && month <= 7) 
-					|| (semester.equalsIgnoreCase("FALL") && month <= 12)){
-					
+
+				if(!(temp == 6 && ((semester.equalsIgnoreCase("SPRING") && month > 4)
+					|| (semester.equalsIgnoreCase("SUMMER") && month > 7) 
+					|| (semester.equalsIgnoreCase("FALL") && month > 12)))){
 					if(coreCourseSet.contains(transcript.getCoursesTaken().get(i).getCourse().getId())){
 						coreCoursesTaken.add(transcript.getCoursesTaken().get(i));
 					}else{
@@ -317,6 +322,7 @@ public class ProgressSummaryGenerator {
 			coreCourses.setPassed(true);
 		}
 		coreCourses.getDetails().setCourses(coreCoursesTaken);
+
 		requirementCheckResults.add(coreCourses);
 		
 		//additional credits
@@ -428,12 +434,14 @@ public class ProgressSummaryGenerator {
 		List<CourseTaken> otherCoursesTaken = new ArrayList<CourseTaken>();
 		for(int i=0; i<transcript.getCoursesTaken().size();i++){
 			//courses become invalid after 6 years
-			if (year - Integer.parseInt(transcript.getCoursesTaken().get(i).getTerm().getYear()) <= 6){
+			int temp = year - Integer.parseInt(transcript.getCoursesTaken().get(i).getTerm().getYear());
+			if (temp <= 6){
 				String semester = transcript.getTermBegan().getSemester();
 				//acurate time based on semester
-				if((semester.equalsIgnoreCase("SPRING") && month <= 4)
-					|| (semester.equalsIgnoreCase("SUMMER") && month <= 7) 
-					|| (semester.equalsIgnoreCase("FALL") && month <= 12)){
+
+				if(!(temp == 6 && ((semester.equalsIgnoreCase("SPRING") && month > 4)
+					|| (semester.equalsIgnoreCase("SUMMER") && month > 7) 
+					|| (semester.equalsIgnoreCase("FALL") && month > 12)))){
 					if(coreCourseSet.contains(transcript.getCoursesTaken().get(i).getCourse().getId())){
 						coreCoursesTaken.add(transcript.getCoursesTaken().get(i));
 					}else{
@@ -558,12 +566,14 @@ public class ProgressSummaryGenerator {
 		List<CourseTaken> otherCoursesTaken = new ArrayList<CourseTaken>();
 		for(int i=0; i<transcript.getCoursesTaken().size();i++){
 			//courses become invalid after 6 years
-			if (year - Integer.parseInt(transcript.getCoursesTaken().get(i).getTerm().getYear()) <= 6){
+			int temp = year - Integer.parseInt(transcript.getCoursesTaken().get(i).getTerm().getYear());
+			if (temp <= 6){
 				String semester = transcript.getTermBegan().getSemester();
 				//acurate time based on semester
-				if((semester.equalsIgnoreCase("SPRING") && month <= 4)
-					|| (semester.equalsIgnoreCase("SUMMER") && month <= 7) 
-					|| (semester.equalsIgnoreCase("FALL") && month <= 12)){
+
+				if(!(temp == 6 && ((semester.equalsIgnoreCase("SPRING") && month > 4)
+					|| (semester.equalsIgnoreCase("SUMMER") && month > 7) 
+					|| (semester.equalsIgnoreCase("FALL") && month > 12)))){
 					
 					if(coreCourseSet.contains(transcript.getCoursesTaken().get(i).getCourse().getId())){
 						coreCoursesTaken.add(transcript.getCoursesTaken().get(i));
@@ -679,12 +689,14 @@ public class ProgressSummaryGenerator {
 		List<CourseTaken> otherCoursesTaken = new ArrayList<CourseTaken>();
 		for(int i=0; i<transcript.getCoursesTaken().size();i++){
 			//courses become invalid after 6 years
-			if (year - Integer.parseInt(transcript.getCoursesTaken().get(i).getTerm().getYear()) <= 6){
+			int temp = year - Integer.parseInt(transcript.getCoursesTaken().get(i).getTerm().getYear());
+			if (temp <= 6){
 				String semester = transcript.getTermBegan().getSemester();
 				//acurate time based on semester
-				if((semester.equalsIgnoreCase("SPRING") && month <= 4)
-					|| (semester.equalsIgnoreCase("SUMMER") && month <= 7) 
-					|| (semester.equalsIgnoreCase("FALL") && month <= 12)){
+
+				if(!(temp == 6 && ((semester.equalsIgnoreCase("SPRING") && month > 4)
+					|| (semester.equalsIgnoreCase("SUMMER") && month > 7) 
+					|| (semester.equalsIgnoreCase("FALL") && month > 12)))){
 					
 					if(coreCourseSet.contains(transcript.getCoursesTaken().get(i).getCourse().getId())){
 						coreCoursesTaken.add(transcript.getCoursesTaken().get(i));
@@ -800,12 +812,14 @@ public class ProgressSummaryGenerator {
 		List<CourseTaken> otherCoursesTaken = new ArrayList<CourseTaken>();
 		for(int i=0; i<transcript.getCoursesTaken().size();i++){
 			//courses become invalid after 6 years
-			if (year - Integer.parseInt(transcript.getCoursesTaken().get(i).getTerm().getYear()) <= 6){
+			int temp = year - Integer.parseInt(transcript.getCoursesTaken().get(i).getTerm().getYear());
+			if (temp <= 6){
 				String semester = transcript.getTermBegan().getSemester();
 				//acurate time based on semester
-				if((semester.equalsIgnoreCase("SPRING") && month <= 4)
-					|| (semester.equalsIgnoreCase("SUMMER") && month <= 7) 
-					|| (semester.equalsIgnoreCase("FALL") && month <= 12)){
+
+				if(!(temp == 6 && ((semester.equalsIgnoreCase("SPRING") && month > 4)
+					|| (semester.equalsIgnoreCase("SUMMER") && month > 7) 
+					|| (semester.equalsIgnoreCase("FALL") && month > 12)))){
 					if(coreCourseSet.contains(transcript.getCoursesTaken().get(i).getCourse().getId())){
 						coreCoursesTaken.add(transcript.getCoursesTaken().get(i));
 					}else{

@@ -1,6 +1,5 @@
 package edu.sc.csce740.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ProgressSummary {
@@ -38,16 +37,7 @@ public class ProgressSummary {
 		this.setRequirementCheckResults(requirementCheckResults);
 	}
 	
-	public ProgressSummary(){
-		this.student = new Student();
-		this.department = "";
-		this.termBegan = new Term();
-		this.degreeSought = new Degree();
-		this.certificateSought = new Degree();
-		this.advisors = new ArrayList<Professor>();
-		this.committee = new ArrayList<Professor>();
-		this.requirementCheckResults = new ArrayList<RequirementCheck>();
-	}
+	
 
 	public Student getStudent() {
 		return student;

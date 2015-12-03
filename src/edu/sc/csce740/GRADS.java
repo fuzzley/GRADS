@@ -252,6 +252,7 @@ public class GRADS implements GRADSIntf {
 			CourseTaken courseTaken = new CourseTaken(courses.get(i), term, "A");
 			courseTakens.add(courseTaken);
 		}
+		
 		return ProgressSummaryGenerator.simulateCourses(userId, courseTakens);
 	}
 

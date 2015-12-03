@@ -366,23 +366,24 @@ public class GRADSTest {
 		String line = br.readLine();
 		while (line != null) {
 			sb.append(line);
+			sb.append(System.lineSeparator());
 			line = br.readLine();
 		}
 		recordsStr = sb.toString();
 		br.close();
 		
 		Gson gson = new Gson();
-		
+		ProgressSummary ps = gson.fromJson(recordsStr, ProgressSummary.class);
 		List<Course>courses = new ArrayList<Course>();
-		Course csce513 = new Course("Computer Architecture", "csce513", "3");
+		//Course csce513 = new Course("Computer Architecture", "csce513", "3");
 		Course csce531 = new Course("Compiler Construction", "csce531", "3");
 		Course csce750 = new Course("Analysis of Algorithms", "csce750", "3");
-		Course csce551 = new Course("Theory of Computation", "csce551","3");
-		courses.add(csce513); courses.add(csce531); courses.add(csce750); courses.add(csce551);
+		//Course csce551 = new Course("Theory of Computation", "csce551","3");
+		//courses.add(csce513);
+		courses.add(csce531); courses.add(csce750); //courses.add(csce551);
 		ProgressSummary generated = grads.simulateCourses(studentId, courses);
 		
-		
-		assertEquals(recordsStr, gson.toJson(generated));
+		assertEquals(gson.toJson(ps), gson.toJson(generated));
 	}
 	
 	@Test
@@ -465,10 +466,39 @@ public class GRADSTest {
 		Gson gson = new Gson();
 		StudentRecord transcript = gson.fromJson(recordsStr, StudentRecord.class);
 		
-		grads.updateTranscript(studentId, transcript, true);
+		grads.updateTranscript(studentId, transcript, false);
 		StudentRecord generated = grads.getTranscript(studentId);
 		
 		assertEquals(transcript, generated);
+	}
+	
+	@Test
+	public void testUpdateTranscript_invalid() throws Exception{
+		this.grads.setUser("rbob");
+		String recordsStr = null;
+		BufferedReader br = null;
+		
+		//read correct progress summary from json file
+		String fileName = "src/resources/test/updateTranscript.json";
+		String studentId = "mhunt";
+		
+		br = new BufferedReader(new FileReader(fileName));
+		StringBuilder sb = new StringBuilder();
+		String line = br.readLine();
+		while (line != null) {
+			sb.append(line);
+			sb.append(System.lineSeparator());
+			line = br.readLine();
+		}
+		recordsStr = sb.toString();
+		br.close();
+		
+		Gson gson = new Gson();
+		StudentRecord transcript = gson.fromJson(recordsStr, StudentRecord.class);
+		
+		exception.expect(LoggedInUserDoesNotHavePermissionException.class);
+		grads.updateTranscript(studentId, transcript, false);
+		
 	}
 	
 	@Test
@@ -486,16 +516,17 @@ public class GRADSTest {
 		String line = br.readLine();
 		while (line != null) {
 			sb.append(line);
-			sb.append(System.lineSeparator());
 			line = br.readLine();
 		}
 		recordsStr = sb.toString();
 		br.close();
 		
 		Gson gson = new Gson();
+		
 		String note = "this is a testing note";
-		grads.addNote(studentId, note, true);
+		grads.addNote(studentId, note, false);
 		StudentRecord generated = grads.getTranscript(studentId);
+		
 		assertEquals(recordsStr, gson.toJson(generated));
 	}
 	
@@ -507,7 +538,7 @@ public class GRADSTest {
 		
 		String note = "this is a testing note";
 		exception.expect(LoggedInUserDoesNotHavePermissionException.class);
-		grads.addNote(studentId, note, true);
+		grads.addNote(studentId, note, false);
 	}
 	
 	@After
