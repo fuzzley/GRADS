@@ -2,7 +2,9 @@ package edu.sc.csce740.test;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import edu.sc.csce740.*;
 import edu.sc.csce740.exception.LoggedInUserDoesNotHavePermissionException;
@@ -69,6 +71,33 @@ public class GRADSTest {
 	public void testGetUser() throws UserNotFoundException {
 		grads.setUser("ggay");
 		assert(grads.getUser() == "ggay");
+	}
+	
+	@Test
+	public void testGetStudentIds_Valid() throws UserNotFoundException, NoUserSetInSessionException, LoggedInUserDoesNotHavePermissionException {
+		Set<String> expectedIds = new HashSet<String>();
+		expectedIds.add("mhunt");
+		expectedIds.add("phd1");
+		expectedIds.add("phd2");
+		expectedIds.add("ms1");
+		expectedIds.add("ms2");
+		expectedIds.add("meng1");
+		expectedIds.add("meng2");
+		expectedIds.add("mse1");
+		expectedIds.add("mse2");
+		expectedIds.add("infas1");
+		expectedIds.add("infas2");
+		
+		grads.setUser("ggay");
+		Set<String> ids = new HashSet<String>(grads.getStudentIDs());
+		assert(expectedIds.equals(ids));
+	}
+	
+	@Test
+	public void testGetStudentIds_Invalid() throws UserNotFoundException, NoUserSetInSessionException, LoggedInUserDoesNotHavePermissionException {
+		grads.setUser("rbob");
+		exception.expect(LoggedInUserDoesNotHavePermissionException.class);
+		grads.getStudentIDs();
 	}
 	
 	@Test
