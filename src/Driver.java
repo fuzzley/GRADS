@@ -4,7 +4,6 @@ import edu.sc.csce740.module.*;
 import edu.sc.csce740.model.*;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 public class Driver {
 	
@@ -24,18 +23,18 @@ public class Driver {
 			System.out.println(ex.getMessage());
 		}
 
-		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+		Gson gson = new Gson();
 		ProgressSummary ps;
 		try {
-			ps = ProgressSummaryGenerator.generateProgressSummary("meng1");
-			System.out.println(gson.toJson(ps));
+			ps = ProgressSummaryGenerator.generateProgressSummary("infas2");
+			System.out.print(gson.toJson(ps));
 		} catch (StudentRecordNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 		
-		System.out.println("done");
+		//System.out.println("done");
 		
 
 	}

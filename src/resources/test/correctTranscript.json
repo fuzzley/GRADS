@@ -1,7 +1,7 @@
 [
   {
     "student": {
-      "id": "ms1",
+      "id": "mhunt",
       "firstName": "Michelle",
       "lastName": "Hunt"
     },
@@ -11,10 +11,10 @@
       "year": 2013
     },
     "degreeSought": {
-      "name": "MS",
+      "name": "PHD",
       "graduation": {
         "semester": "SPRING",
-        "year": 2016
+        "year": 2018
       }
     },
     "previousDegrees": [
@@ -23,7 +23,7 @@
         "graduation": {
           "semester": "SPRING",
           "year": 2008
-        }
+       	}
        }
     ],
     "advisors": [
@@ -55,10 +55,10 @@
         "course": {
           "name": "Naptime",
           "id": "nap734",
-          "numCredits": "3"
+          "numCredits": "5"
         },
         "term": {
-          "semester": "FALL",
+          "semester": "SPRING",
           "year": 2014
         },
         "grade": "B"
@@ -67,7 +67,7 @@
         "course": {
           "name": "Advanced Naptime",
           "id": "nap888",
-          "numCredits": "3"
+          "numCredits": "5"
         },
         "term": {
           "semester": "FALL",
@@ -101,6 +101,18 @@
       },
       {
         "course": {
+             "name": "Theory of Computation",
+             "id": "csce551",
+             "numCredits": "3"
+        },
+        "term": {
+          "semester": "FALL",
+          "year": 2014
+        },
+        "grade": "A"
+      },
+      {
+        "course": {
              "name": "Analysis of Algorithms",
              "id": "csce750",
              "numCredits": "3"
@@ -111,7 +123,7 @@
         },
         "grade": "A"
       },
-    {
+      {
         "course": {
           "name": "Seminar in Advances in Computing",
           "id": "csce791",
@@ -123,35 +135,35 @@
         },
         "grade": "A"
       },
+   {
+        "course": {
+          "name": "Dissertation Preparation",
+          "id": "csce899",
+          "numCredits": "6"
+        },
+        "term": {
+          "semester": "FALL",
+          "year": 2014
+        },
+        "grade": "P"
+      },
+   {
+        "course": {
+          "name": "Dissertation Preparation",
+          "id": "csce899",
+          "numCredits": "6"
+        },
+        "term": {
+          "semester": "SPRING",
+          "year": 2015
+        },
+        "grade": "P"
+      },
       {
         "course": {
           "name": "Software Engineering",
           "id": "csce740",
           "numCredits": "3"
-        },
-        "term": {
-          "semester": "FALL",
-          "year": 2015
-        },
-        "grade": "_"
-      },
-      {
-        "course": {
-          "name": "csce741",
-          "id": "csce741",
-          "numCredits": "3"
-        },
-        "term": {
-          "semester": "FALL",
-          "year": 2015
-        },
-        "grade": "_"
-      },
-      {
-        "course": {
-          "name": "Software Engineering",
-          "id": "csce798",
-          "numCredits": "6"
         },
         "term": {
           "semester": "FALL",
@@ -179,25 +191,6 @@
     "notes": [
       "Great student. A++ Would recommend.",
       "Owes me 20 bucks."
-    ]
-  },
-  {
-    "student": {
-      "id": "ggay",
-      "firstName": "Greg",
-      "lastName": "Gay"
-    },
-    "advisors": [
-      {
-        "department": "COMPUTER_SCIENCE",
-        "firstName": "Duncan",
-        "lastName": "BUELL"
-      }
-    ],
-    "notes": [
-      "note1",
-      "note2",
-      "note3"
     ]
   }
 ]

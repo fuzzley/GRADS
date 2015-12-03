@@ -706,11 +706,13 @@ public class ProgressSummaryGenerator {
 		//additional credits
 		RequirementCheck additionalCredits = new RequirementCheck("ADDITIONAL_CREDITS_MSE");
 		int credits = 0;
+		List<CourseTaken> validAddCoursesTaken = new ArrayList<CourseTaken>();
 		for (int i=0; i<otherCoursesTaken.size();i++){
 			if(additionalCourses.contains(otherCoursesTaken.get(i).getCourse().getId())){
 				//the valid course must be above 700
 				if (Integer.parseInt(otherCoursesTaken.get(i).getCourse().getId().replaceAll("[^0-9]", "")) > 700
 						&& otherCoursesTaken.get(i).getCourse().getId().replaceAll("[0-9]", "").equalsIgnoreCase("csce")){
+					validAddCoursesTaken.add(otherCoursesTaken.get(i));
 					credits += Integer.parseInt(otherCoursesTaken.get(i).getCourse().getNumCredits());
 				}
 			}
@@ -742,6 +744,7 @@ public class ProgressSummaryGenerator {
 		additionalCreditsNotes.add("CSCE 826 ­ Cooperative Information Systems");
 		additionalCreditsNotes.add("CSCE 846 ­ Software Reliability and Safety");
 		additionalCreditsNotes.add("MGSC 872 ­ Project Management");
+		additionalCredits.getDetails().setCourses(validAddCoursesTaken);
 		additionalCredits.getDetails().setNotes(additionalCreditsNotes);
 		requirementCheckResults.add(additionalCredits);
 		
