@@ -40,15 +40,35 @@ public class GRADSTest {
 	}
 	
 	@Test
-	public void testSetUserValid() throws UserNotFoundException {
+	public void testSetUser_Valid() throws UserNotFoundException {
 		grads.setUser("ggay");
 		assert(grads.getUser() == "ggay");
 	}
 
 	@Test
-	public void testSetUserInvalid() throws Exception{
+	public void testSetUser_Invalid() throws UserNotFoundException{
 		exception.expect(UserNotFoundException.class);
 		grads.setUser("gggay");
+	}
+	
+	@Test
+	public void testClearSession_Valid() throws UserNotFoundException, NoUserSetInSessionException {
+		grads.setUser("ggay");
+		grads.clearSession();
+		assert(grads.getUser() == null);
+	}
+	
+	@Test
+	public void testClearSession_Invalid() throws UserNotFoundException, NoUserSetInSessionException {
+		exception.expect(NoUserSetInSessionException.class);
+		grads.clearSession();
+		assert(grads.getUser() == null);
+	}
+	
+	@Test
+	public void testGetUser() throws UserNotFoundException {
+		grads.setUser("ggay");
+		assert(grads.getUser() == "ggay");
 	}
 	
 	@Test

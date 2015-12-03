@@ -25,6 +25,13 @@ import edu.sc.csce740.module.TranscriptManager;
 
 public class GRADS implements GRADSIntf {
 
+	private Session session;
+	
+	public GRADS()
+	{
+		session = new Session();
+	}
+	
 	@Override
     /**
      * Loads the list of system usernames and permissions.
@@ -67,7 +74,7 @@ public class GRADS implements GRADSIntf {
 			throw new UserNotFoundException();
 		} //else
 		
-		Session.setUser(userId);
+		session.setUser(userId);
 	}
 
 	@Override
@@ -76,11 +83,11 @@ public class GRADS implements GRADSIntf {
      * @throws Exception  if the user id is invalid.  SEE NOTE IN CLASS HEADER.
      */
 	public void clearSession() throws NoUserSetInSessionException {
-		if (Session.getUser() == null) {
+		if (session.getUser() == null) {
 			throw new NoUserSetInSessionException();
 		} //else
 		
-		Session.clearSession();		
+		session.clearSession();		
 	}
 
 	@Override
@@ -89,7 +96,7 @@ public class GRADS implements GRADSIntf {
      * @return  the user id of the user currently using the system.
      */
 	public String getUser() {
-		return Session.getUser();
+		return session.getUser();
 	}
 
 	@Override
@@ -100,7 +107,7 @@ public class GRADS implements GRADSIntf {
      * @throws Exception is the current user is not a GPC.
      */
 	public List<String> getStudentIDs() throws NoUserSetInSessionException, LoggedInUserDoesNotHavePermissionException {
-		String loggedInUserId = Session.getUser();
+		String loggedInUserId = session.getUser();
 		if (loggedInUserId == null) {
 			throw new NoUserSetInSessionException();
 		} //else
@@ -122,7 +129,7 @@ public class GRADS implements GRADSIntf {
      *      CLASS HEADER.
      */
 	public StudentRecord getTranscript(String userId) throws NoUserSetInSessionException, LoggedInUserDoesNotHavePermissionException, StudentRecordNotFoundException {
-		String loggedInUserId = Session.getUser();
+		String loggedInUserId = session.getUser();
 		if (loggedInUserId == null) {
 			throw new NoUserSetInSessionException();
 		} //else
@@ -147,7 +154,7 @@ public class GRADS implements GRADSIntf {
      */
 	public void updateTranscript(String userId, StudentRecord transcript, Boolean permanent) 
 			throws NoUserSetInSessionException, LoggedInUserDoesNotHavePermissionException, StudentRecordNotFoundException, StudentRecordsNotSavedException {
-		String loggedInUserId = Session.getUser();
+		String loggedInUserId = session.getUser();
 		if (loggedInUserId == null) {
 			throw new NoUserSetInSessionException();
 		} //else
@@ -176,7 +183,7 @@ public class GRADS implements GRADSIntf {
      */
 	public void addNote(String userId, String note, Boolean permanent)
 			 throws NoUserSetInSessionException, LoggedInUserDoesNotHavePermissionException, StudentRecordNotFoundException, StudentRecordsNotSavedException {
-		String loggedInUserId = Session.getUser();
+		String loggedInUserId = session.getUser();
 		if (loggedInUserId == null) {
 			throw new NoUserSetInSessionException();
 		} //else
@@ -199,7 +206,7 @@ public class GRADS implements GRADSIntf {
      */
 	public ProgressSummary generateProgressSummary(String userId)
 			throws Exception {
-		String loggedInUserId = Session.getUser();
+		String loggedInUserId = session.getUser();
 		if (loggedInUserId == null) {
 			throw new NoUserSetInSessionException();
 		} //else
@@ -224,7 +231,7 @@ public class GRADS implements GRADSIntf {
      */
 	public ProgressSummary simulateCourses(String userId,
 			List<Course> courses) throws Exception {
-		String loggedInUserId = Session.getUser();
+		String loggedInUserId = session.getUser();
 		if (loggedInUserId == null) {
 			throw new NoUserSetInSessionException();
 		} //else

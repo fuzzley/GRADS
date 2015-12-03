@@ -6,13 +6,13 @@ package edu.sc.csce740.module;
  *
  */
 public class Session {
-	private static String userId;
+	private String userId;
 	
 	/**
 	 * Set the currently logged in user id.
 	 * @param id
 	 */
-	public static void setUser(String id) {
+	public void setUser(String id) {
 		userId = id;
 	}
 	
@@ -20,14 +20,14 @@ public class Session {
 	 * Get the currently logged in user id.
 	 * @return Currently logged in user id.
 	 */
-	public static String getUser() {
+	public String getUser() {
 		return userId;
 	}
 	
 	/**
 	 * Clear out the currently logged in user id.
 	 */
-	public static void clearSession() {
+	public void clearSession() {
 		userId = null;
 	}
 }
