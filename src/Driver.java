@@ -38,6 +38,8 @@ public class Driver {
 			System.out.println(mHunt.getStudent().getFirstName());
 			mHunt.getStudent().setFirstName("Bob");
 			
+			grads.updateTranscript("mhunt", mHunt, false);
+			
 			StudentRecord updatedMHunt = grads.getTranscript("mhunt");
 			System.out.println(updatedMHunt.getStudent().getFirstName());
 		} catch (Exception ex) {
