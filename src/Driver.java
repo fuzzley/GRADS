@@ -22,17 +22,27 @@ public class Driver {
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
 		}
-
-		Gson gson = new Gson();
-		ProgressSummary ps;
-		try {
-			ps = ProgressSummaryGenerator.generateProgressSummary("infas2");
-			System.out.print(gson.toJson(ps));
-		} catch (StudentRecordNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//
+//		Gson gson = new Gson();
+//		ProgressSummary ps;
+//		try {
+//			ps = ProgressSummaryGenerator.generateProgressSummary("infas2");
+//			System.out.print(gson.toJson(ps));
+//		} catch (StudentRecordNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		
+		try {
+			StudentRecord mHunt = grads.getTranscript("mhunt");
+			System.out.println(mHunt.getStudent().getFirstName());
+			mHunt.getStudent().setFirstName("Bob");
+			
+			StudentRecord updatedMHunt = grads.getTranscript("mhunt");
+			System.out.println(updatedMHunt.getStudent().getFirstName());
+		} catch (Exception ex) {
+			System.out.println(ex.getMessage());
+		}
 		
 		//System.out.println("done");
 		
